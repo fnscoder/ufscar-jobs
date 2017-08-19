@@ -1,0 +1,23 @@
+ {% extends 'base.html' %}
+
+ {% block content %}
+<div class="col-md-4 col-md-offset-4">
+    <h2>{{ current_user.name }}</h2>
+    
+    <div class="form-group">
+        <label>Nome</label>
+        {{ current_user.name }}        
+    </div>
+
+    <div class="form-group">
+        <label>E-mail</label>
+        {{ current_user.email }}
+    </div>
+    
+    <div class="form-group">
+        <label>Nome de usuário</label>
+        {{ current_user.username }}
+    </div>
+
+</div>
+ {% endblock %}
