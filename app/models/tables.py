@@ -39,42 +39,30 @@ class Info(db.Model):
     __tablename__ = "infos"
 
     id = db.Column(db.Integer, primary_key=True)
-    birth_date = db.Column(db.DateTime)
+    birth_date = db.Column(db.String(10))
     alternative_email = db.Column(db.String(150))
     phone = db.Column(db.String(20), nullable=False)
     cellphone = db.Column(db.String(20), nullable=False)
     cpf = db.Column(db.Integer, nullable=False, unique=True)
+
+    street = db.Column(db.String(150), nullable=False)
+    number = db.Column(db.String(6), nullable=False)
+    city = db.Column(db.String(100), nullable=False)
+    state = db.Column(db.String(30), nullable=False)
+    cep = db.Column(db.String(9), nullable=False)
+
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     user = db.relationship('User', foreign_keys=user_id)
 
-    def __init__(self, birth_date, alternative_email, phone, cellphone,
-                 cpf, user_id):
+    def __init__(self, birth_date, alternative_email, phone, cellphone, cpf,
+                 street, number, city, state, cep, user_id):
+
         self.birth_date = birth_date
         self.alternative_email = alternative_email
         self.phone = phone
         self.cellphone = cellphone
         self.cpf = cpf
-        self.user_id = user_id
-
-    def __repr__(self):
-        return "<Info %r>" % self.id
-
-
-class Address(db.Model):
-    __tablename__ = "adresses"
-
-    id = db.Column(db.Integer, primary_key=True)
-    street = db.Column(db.String(150), nullable=False)
-    number = db.Column(db.Integer, nullable=False)
-    city = db.Column(db.String(100), nullable=False)
-    state = db.Column(db.String(30), nullable=False)
-    cep = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-    user = db.relationship('User', foreign_keys=user_id)
-
-    def __init__(self, street, number, city, state, cep, user_id):
         self.street = street
         self.number = number
         self.city = city
@@ -82,8 +70,23 @@ class Address(db.Model):
         self.cep = cep
         self.user_id = user_id
 
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)
+
     def __repr__(self):
-        return "<Address - City %r>" % self.city
+        return "<Info %r>" % self.cpf
 
 
 class Course(db.Model):
@@ -94,7 +97,7 @@ class Course(db.Model):
     school_name = db.Column(db.String(150), nullable=False)
     grade = db.Column(db.String(30), nullable=False)
     course_load = db.Column(db.Integer, nullable=False)
-    conclusion = db.Column(db.DateTime, nullable=False)
+    conclusion = db.Column(db.String(10), nullable=False)
     observation = db.Column(db.String(500))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
@@ -120,8 +123,8 @@ class Work(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post = db.Column(db.String(150), nullable=False)
     company = db.Column(db.String(150), nullable=False)
-    entry_date = db.Column(db.DateTime, nullable=False)
-    departure_date = db.Column(db.DateTime)
+    entry_date = db.Column(db.String(10), nullable=False)
+    departure_date = db.Column(db.String(10))
     tasks = db.Column(db.String(250), nullable=False)
     observation = db.Column(db.String(500))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

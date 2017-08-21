@@ -2,8 +2,8 @@ from flask import render_template, flash, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user
 from app import app, db, lm
 
-from app.models.forms import LoginForm, RegistrationForm, EditForm
-from app.models.tables import User
+from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm
+from app.models.tables import User, Info, Course, Work
 
 
 @lm.user_loader
@@ -53,12 +53,11 @@ def logout():
 
 @app.route("/profile/<username>")
 def profile(username):
-    u = User(name=current_user.name, email=current_user.email, username=current_user.username, password=current_user.password)
     return render_template('profile.html')
 
 
 @app.route("/edit/<username>", methods=["GET", "POST"])
-def edit(username):
+def edit_profile(username):
     form = EditForm()
     if request.method == "POST" and form.validate_on_submit():
         current_user.name = form.name.data
@@ -69,4 +68,141 @@ def edit(username):
         db.session.commit()
         flash('Atualizado!')
         return redirect(url_for('profile', username=current_user.username))
-    return render_template('edit.html', form=form)
+    return render_template('edit_profile.html', form=form)
+
+
+@app.route("/info/<username>", methods=["GET", "POST"])
+def info(username):
+    form = InfoForm()
+    i = Info.query.filter_by(user_id=current_user.id).first()
+    if i:
+        return render_template('info.html', i=i)
+    else:
+        if request.method == "POST" and form.validate_on_submit():
+            info = Info(form.birth_date.data, form.alternative_email.data,
+                        form.phone.data, form.cellphone.data, form.cpf.data,
+                        form.street.data, form.number.data, form.city.data,
+                        form.state.data, form.cep.data, current_user.id)
+            db.session.add(info)
+            db.session.commit()
+            flash('Informações inseridas com sucesso!')
+            return redirect(url_for('info', username=current_user.username))
+    return render_template('add_info.html', form=form)
+
+
+@app.route("/edit_info/<username>", methods=["GET", "POST"])
+def edit_info(username):
+    form = EditInfoForm()
+    i = Info.query.filter_by(user_id=current_user.id).first()
+    if request.method == "POST":  # and form.validate_on_submit():
+        i.birth_date = request.form.get("birth_date")
+        i.alternative_email = request.form.get("alternative_email")
+        i.phone = request.form.get("phone")
+        i.cellphone = request.form.get("cellphone")
+        i.cpf = request.form.get("cpf")
+        i.street = request.form.get("street")
+        i.number = request.form.get("number")
+        i.city = request.form.get("city")
+        i.state = request.form.get("state")
+        i.cep = request.form.get("cep")
+
+        db.session.commit()
+        flash('Informações atualizadas com sucesso!')
+        return redirect(url_for('info', username=current_user.username))
+    return render_template('edit_info.html', form=i)
+
+
+@app.route("/add_course/<username>", methods=["GET", "POST"])
+def add_course(username):
+    form = CourseForm()
+    if request.method == "POST" and form.validate_on_submit():
+        course = Course(form.course_name.data, form.school_name.data,
+                        form.grade.data, form.course_load.data,
+                        form.conclusion.data, form.observation.data,
+                        current_user.id)
+        db.session.add(course)
+        db.session.commit()
+        flash('Informações inseridas com sucesso!')
+        return redirect(url_for('courses', username=current_user.username))
+    return render_template('add_course.html', form=form)
+
+
+@app.route("/add_work/<username>", methods=["GET", "POST"])
+def add_work(username):
+    form = WorkForm()
+    if request.method == "POST" and form.validate_on_submit():
+        work = Work(form.post.data, form.company.data,
+                    form.entry_date.data, form.departure_date.data,
+                    form.tasks.data, form.observation.data, current_user.id)
+        db.session.add(work)
+        db.session.commit()
+        flash('Informações inseridas com sucesso!')
+        return redirect(url_for('works', username=current_user.username))
+    return render_template('add_work.html', form=form)
+
+
+@app.route("/edit_course/<username>", methods=["GET", "POST"])
+def edit_course(username):
+    form = EditCourseForm()
+    c = Course.query.filter_by(user_id=current_user.id).first()
+    print(c)
+    if request.method == "POST":
+        c.course_name = request.form.get("course_name")
+        c.school_name = request.form.get("school_name")
+        c.grade = request.form.get("grade")
+        c.course_load = request.form.get("course_load")
+        c.conclusion = request.form.get("conclusion")
+        c.observation = request.form.get("observation")
+
+        db.session.commit()
+        flash('Atualizado!')
+        return redirect(url_for('courses', username=current_user.username))
+    return render_template('edit_course.html', form=c)
+
+
+@app.route("/edit_work/<username>", methods=["GET", "POST"])
+def edit_work(username):
+    form = EditWorkForm()
+    w = Work.query.filter_by(user_id=current_user.id).first()
+    if request.method == "POST":
+        w.post = request.form.get('post')
+        w.company = request.form.get('company')
+        w.entry_date = request.form.get('entry_date')
+        w.departure_date = request.form.get('departure_date')
+        w.tasks = request.form.get('tasks')
+        w.observation = request.form.get('observation')
+
+        db.session.commit()
+        flash('Atualizado!')
+        return redirect(url_for('works', username=current_user.username))
+    return render_template('edit_work.html', form=w)
+
+
+@app.route("/courses/<username>", methods=["GET", "POST"])
+def courses(username):
+    my_courses = Course.query.filter_by(user_id=current_user.id)
+    return render_template('courses.html', courses=my_courses)
+
+
+@app.route("/works/<username>", methods=["GET", "POST"])
+def works(username):
+    my_works = Work.query.filter_by(user_id=current_user.id)
+    return render_template('works.html', works=my_works)
+
+
+@app.route("/delete_course/<int:id>", methods=["GET", "POST"])
+def delete_course(id):
+    c = Course.query.filter_by(id=id).first()
+    db.session.delete(c)
+    db.session.commit()
+
+    return render_template('courses.html', username=current_user.username)
+
+
+@app.route("/delete_work/<int:id>", methods=["GET", "POST"])
+def delete_work(id):
+    w = Work.query.filter_by(id=id).first()
+    db.session.delete(w)
+    db.session.commit()
+
+    return render_template('works.html', username=current_user.username)

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-4 col-md-offset-4">
+    <h2>Adicionar Experiência Profissional</h2>
+    <form action="" method="POST">
+
+    {{ form.csrf_token }}
+        <div class="form-group">
+            <label>Cargo</label>
+            {{ form.post(class="form-control", placeholder="Título do cargo") }}
+            {% if form.errors.post %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.post %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>Empresa</label>
+            {{ form.company(class="form-control", placeholder="Nome da empresa") }}
+            {% if form.errors.company %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.company %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label>Data de início</label>
+            {{ form.entry_date(class="form-control") }}
+            {% if form.errors.entry_date %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.entry_date %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>Data de término</label>
+            {{ form.departure_date(class="form-control") }}
+            {% if form.errors.departure_date %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.departure_date %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>Atividades</label>
+            {{ form.tasks(class="form-control", placeholder="Descreva suas principais atividades.") }}
+            {% if form.errors.tasks %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.tasks %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>Observação</label>
+            {{ form.observation(class="form-control", placeholder="Campo para informações que julgar relevantes.") }}
+            {% if form.errors.observation %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.observation %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Gravar</button>
+    </form>
+</div>
+{% endblock %}

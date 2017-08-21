@@ -1,11 +1,10 @@
- {% extends 'base.html' %}
+{% extends 'base.html' %}
 
- {% block content %}
+{% block content %}
 <div class="col-md-4 col-md-offset-4">
     <h2>Editar</h2>
     <form action="" method="POST">
-        {{ form.csrf_token }}
-        
+        {{ form.csrf_token }}        
         <div class="form-group">
             <label>Nome</label>
             <input class="form-control" type="text" name="name" value="{{ current_user.name }}">
@@ -62,7 +61,6 @@
             {% endif %}
         </div>
 
-
         <div class="form-group">
             <label>Confirme sua senha</label>
             <input class="form-control" type="password" name="confirm">
@@ -77,7 +75,7 @@
             {% endif %}
         </div>
 
-        <button type="submit" class="btn btn-default">Atualizar</button>
+        <button type="submit" class="btn btn-primary">Atualizar</button>
     </form>
 </div>
- {% endblock %}
+{% endblock %}

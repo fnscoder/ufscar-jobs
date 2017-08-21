@@ -25,8 +25,10 @@
           <ul class="nav nav-pills pull-right">
             <li role="presentation" class="active"><a href="{{ url_for('index') }}">Home</a></li>
             {% if current_user.is_authenticated %}
-              <li><a href="/profile/{{ current_user.username }}">{{ current_user.name }}</a></li>
-              <li><a href="/edit/{{ current_user.username }}">Editar Perfil</a></li>
+              <li><a href="/profile/{{ current_user.username }}">Perfil</a></li>
+              <li><a href="/info/{{ current_user.username }}">Dados Pessoais</a></li>
+              <li><a href="/courses/{{ current_user.username }}">Cursos</a></li>
+              <li><a href="/works/{{ current_user.username }}">Experiência Profissional</a></li>
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
 
             {% else %}
@@ -35,7 +37,7 @@
             {% endif %}
           </ul>
         </nav>
-        <h3 class="text-muted">Ufscar | Jobs</h3>
+        <h3 class="text-muted">Ufscar | Jobs | {{ current_user.name }}</h3>
       </div>
 
       
