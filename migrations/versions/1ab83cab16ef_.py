@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: fdcaf68274f1
+Revision ID: 1ab83cab16ef
 Revises: 
-Create Date: 2017-08-20 19:02:04.514213
+Create Date: 2017-08-21 20:10:22.662953
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fdcaf68274f1'
+revision = '1ab83cab16ef'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -34,7 +34,7 @@ def upgrade():
     sa.Column('school_name', sa.String(length=150), nullable=False),
     sa.Column('grade', sa.String(length=30), nullable=False),
     sa.Column('course_load', sa.Integer(), nullable=False),
-    sa.Column('conclusion', sa.DateTime(), nullable=False),
+    sa.Column('conclusion', sa.String(length=10), nullable=False),
     sa.Column('observation', sa.String(length=500), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
@@ -42,7 +42,7 @@ def upgrade():
     )
     op.create_table('infos',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('birth_date', sa.DateTime(), nullable=True),
+    sa.Column('birth_date', sa.String(length=10), nullable=True),
     sa.Column('alternative_email', sa.String(length=150), nullable=True),
     sa.Column('phone', sa.String(length=20), nullable=False),
     sa.Column('cellphone', sa.String(length=20), nullable=False),
@@ -61,8 +61,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('post', sa.String(length=150), nullable=False),
     sa.Column('company', sa.String(length=150), nullable=False),
-    sa.Column('entry_date', sa.DateTime(), nullable=False),
-    sa.Column('departure_date', sa.DateTime(), nullable=True),
+    sa.Column('entry_date', sa.String(length=10), nullable=False),
+    sa.Column('departure_date', sa.String(length=10), nullable=True),
     sa.Column('tasks', sa.String(length=250), nullable=False),
     sa.Column('observation', sa.String(length=500), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
