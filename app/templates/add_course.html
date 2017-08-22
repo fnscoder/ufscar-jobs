@@ -7,7 +7,7 @@
         {{ form.csrf_token }}
         <div class="form-group">
             <label>Curso</label>
-            {{ form.course_name(class="form-control", placeholder="Data de nascimento") }}
+            {{ form.course_name(class="form-control", placeholder="Nome do curso") }}
             {% if form.errors.course_name %}
             <div class="alert alert-danger" role="alert">
                 <ul>
@@ -21,7 +21,7 @@
 
         <div class="form-group">
             <label>Nome da Escola</label>
-            {{ form.school_name(class="form-control", placeholder="Seu e-mail alternativo") }}
+            {{ form.school_name(class="form-control", placeholder="Nome da escola") }}
             {% if form.errors.school_name %}
             <div class="alert alert-danger" role="alert">
                 <ul>

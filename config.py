@@ -1,7 +1,9 @@
 DEBUG = False
 
+#  Configuração para conexão com o sgbd mysql
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@localhost/ufscarjobs'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
-SECRET_KEY = 'chave-de-seguranca-bem-segura'
+# chave secreta para os formulários
+SECRET_KEY = 'pJMlGrhStBPmGhJlRs4BL'

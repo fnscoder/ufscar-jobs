@@ -1,5 +1,9 @@
 from app import db
 
+'''
+Definição das classes que representam as tabelas no banco de dados
+'''
+
 
 class User(db.Model):
     __tablename__ = "users"

@@ -81,8 +81,7 @@ class WorkForm(FlaskForm):
         DataRequired(message="Informe a empresa.")])
     entry_date = StringField("entry_date", validators=[DataRequired(
         message="Informe a data de entrada.")])
-    departure_date = StringField("departure_date", validators=[DataRequired(
-        message="Informe a data de saída.")])
+    departure_date = StringField("departure_date")
     tasks = StringField("tasks", validators=[DataRequired(
         message="Informe as atribuições do cargo.")])
     observation = StringField("observation")
