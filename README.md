@@ -1,9 +1,18 @@
 # ufscar-jobs
 
-Projeto desenvolvido utilizando a linguagem Python e o framework web Flask.
+## Desenvolvimento de Projetos e Sistemas 1
+
+### Integrantes do Grupo 01
+- FELIPE NOGUEIRA DE SOUZA 581038
+- JOAO PAULO FRANCELINO MONTEIRO 545767
+- Luis Fernando Molina 481866
+- VITOR LEMES PAIZAM 544868
+- WESLEY SILVA PEREIRA SALES 581100
+
+Desenvolvido utilizando a linguagem Python e o framework web Flask.
 
 Para executar o projeto é necessário:
-- Instalar python 3.6
+- Python 3.6
 - (Preferencialmente) Instalar o virtualenv e virtualenv-wrapper, criar um ambiente virtual e ativá-lo
 - Instalar o requirements.txt com o comando: <br />
 $ pip install -r requirements.txt
