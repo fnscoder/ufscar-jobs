@@ -19,9 +19,8 @@ manager.add_command('db', MigrateCommand)
 manager.add_command("runserver", Server())
 
 # configuração do server
-#port = int(os.environ.get("PORT", 5000))
-
-#server = Server(host="0.0.0.0", port=port)
+port = int(os.environ.get("PORT", 5000))
+server = Server(host="0.0.0.0", port=port)
 
 # Gerenciamento de login e do usuário logado
 lm = LoginManager(app)
