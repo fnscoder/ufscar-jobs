@@ -1,4 +1,4 @@
-# (ufscar-jobs)[https://ufscar-jobs.herokuapp.com/]
+# [ufscar-jobs](https://ufscar-jobs.herokuapp.com/)
 
 ## Desenvolvimento de Projetos e Sistemas 1
 
