@@ -1,7 +1,7 @@
 DEBUG = False
 
-#  Configuração para conexão com o sgbd mysql
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@localhost/ufscarjobs'
+#  Configuração para conexão com o sgbd postgres
+SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:123456@localhost/ufscarjobs'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 

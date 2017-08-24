@@ -47,7 +47,7 @@ class Info(db.Model):
     alternative_email = db.Column(db.String(150))
     phone = db.Column(db.String(20), nullable=False)
     cellphone = db.Column(db.String(20), nullable=False)
-    cpf = db.Column(db.Integer, nullable=False, unique=True)
+    cpf = db.Column(db.String(14), nullable=False, unique=True)
 
     street = db.Column(db.String(150), nullable=False)
     number = db.Column(db.String(6), nullable=False)
