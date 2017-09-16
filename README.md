@@ -17,7 +17,7 @@ Para executar o projeto é necessário:
 - Instalar o requirements.txt com o comando: <br />
 $ pip install -r requirements.txt
 
-Instalar o sgbd MySQL, criar uma conexão:
+Instalar o sgbd PostgreSQL, criar uma conexão:
 - servidor: localhost
 - user: root
 - senha: root

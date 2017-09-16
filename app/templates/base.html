@@ -26,9 +26,15 @@
             <li role="presentation" class="active"><a href="{{ url_for('index') }}">Home</a></li>
             {% if current_user.is_authenticated %}
               <li><a href="/profile/{{ current_user.username }}">Perfil</a></li>
-              <li><a href="/info/{{ current_user.username }}">Dados Pessoais</a></li>
-              <li><a href="/courses/{{ current_user.username }}">Cursos</a></li>
-              <li><a href="/works/{{ current_user.username }}">Experiência Profissional</a></li>
+              {% if current_user.is_user %}
+                <li><a href="/info/{{ current_user.username }}">Dados Pessoais</a></li>
+                <li><a href="/courses/{{ current_user.username }}">Cursos</a></li>
+                <li><a href="/works/{{ current_user.username }}">Experiência Profissional</a></li>
+              {% else %}
+                <li><a href="/company_info/{{ current_user.username }}">Dados Cadastrais</a></li>
+                <li><a href="#">Cadastrar Vaga</a></li>
+                <li><a href="#">Vagas Cadastradas</a></li>
+              {% endif %}
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
 
             {% else %}

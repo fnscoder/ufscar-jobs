@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-4 col-md-offset-4">
+    <h2>Editar Dados da Empresa</h2>
+    <form action="" method="POST">
+        {{ form.csrf_token }}       
+
+        <div class="form-group">
+            <label>CNPJ</label>
+            <input class="form-control" type="text" name="cnpj" value="{{ form.cpf }}">
+        </div>
+        <div class="form-group">
+            <label>Telefone</label>
+            <input class="form-control" type="text" name="phone" value="{{ form.phone }}">
+        </div>
+        <div class="form-group">
+            <label>Rua</label>
+            <input class="form-control" type="text" name="street" value="{{ form.street }}">
+        </div>
+        <div class="form-group">
+            <label>Número</label>
+            <input class="form-control" type="text" name="number" value="{{ form.number }}">
+        </div>
+        <div class="form-group">
+            <label>Cidade</label>
+            <input class="form-control" type="text" name="city" value="{{ form.city }}">
+        </div>
+        <div class="form-group">
+            <label>Estado</label>
+            <input class="form-control" type="text" name="state" value="{{ form.state }}">
+        </div>
+        <div class="form-group">
+            <label>CEP</label>
+            <input class="form-control" type="text" name="cep" value="{{ form.cep }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Atualizar</button>
+    </form>
+</div>
+{% endblock %}

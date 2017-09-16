@@ -1,9 +1,9 @@
 from flask import render_template, flash, request, redirect, url_for
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
 
-from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm
-from app.models.tables import User, Info, Course, Work
+from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm, InfoCompanyForm, EditInfoCompanyForm
+from app.models.tables import User, Info, Course, Work, Company, Job
 
 
 @lm.user_loader
@@ -59,7 +59,7 @@ def register():
     form = RegistrationForm()
     if request.method == "POST" and form.validate_on_submit():
         user = User(form.name.data, form.email.data, form.username.data,
-                    form.password.data)
+                    form.password.data, form.type_user.data)
         db.session.add(user)
         db.session.commit()
         flash('Obrigado por se registrar!')
@@ -78,17 +78,19 @@ def logout():
 
 
 @app.route("/profile/<username>")
+@login_required
 def profile(username):
     '''
-    Exibe o perfil do usuário
+    Exibe o perfil do usuário ou da empresa
     '''
     return render_template('profile.html')
 
 
 @app.route("/edit/<username>", methods=["GET", "POST"])
+@login_required
 def edit_profile(username):
     '''
-    Edita as informações de registro do usuário
+    Edita as informações de registro do usuário ou empresa
     '''
     form = EditForm()
     if request.method == "POST" and form.validate_on_submit():
@@ -104,6 +106,7 @@ def edit_profile(username):
 
 
 @app.route("/info/<username>", methods=["GET", "POST"])
+@login_required
 def info(username):
     '''
     Carrega o formulário de informações do usuários (dados pessoais)
@@ -111,24 +114,27 @@ def info(username):
     senão tiver carrega o formulário e redireciona para a url de adicionar
     informações. Se já tiver informações salvas exibe as informações
     '''
-    form = InfoForm()
-    i = Info.query.filter_by(user_id=current_user.id).first()
-    if i:
-        return render_template('info.html', i=i)
-    else:
-        if request.method == "POST" and form.validate_on_submit():
-            info = Info(form.birth_date.data, form.alternative_email.data,
-                        form.phone.data, form.cellphone.data, form.cpf.data,
-                        form.street.data, form.number.data, form.city.data,
-                        form.state.data, form.cep.data, current_user.id)
-            db.session.add(info)
-            db.session.commit()
-            flash('Informações inseridas com sucesso!')
-            return redirect(url_for('info', username=current_user.username))
-    return render_template('add_info.html', form=form)
+    if current_user.type_user == 1:
+        print(current_user.type_user)
+        form = InfoForm()
+        i = Info.query.filter_by(user_id=current_user.id).first()
+        if i:
+            return render_template('info.html', i=i)
+        else:
+            if request.method == "POST" and form.validate_on_submit():
+                info = Info(form.birth_date.data, form.alternative_email.data,
+                            form.phone.data, form.cellphone.data, form.cpf.data,
+                            form.street.data, form.number.data, form.city.data,
+                            form.state.data, form.cep.data, current_user.id)
+                db.session.add(info)
+                db.session.commit()
+                flash('Informações inseridas com sucesso!')
+                return redirect(url_for('info', username=current_user.username))
+        return render_template('add_info.html', form=form)
 
 
 @app.route("/edit_info/<username>", methods=["GET", "POST"])
+@login_required
 def edit_info(username):
     '''
     Carrega o formulário com as informações do usuário para permitir a edição
@@ -155,6 +161,7 @@ def edit_info(username):
 
 
 @app.route("/add_course/<username>", methods=["GET", "POST"])
+@login_required
 def add_course(username):
     '''
     Permite adicionar cursos para o usuário logado
@@ -173,6 +180,7 @@ def add_course(username):
 
 
 @app.route("/add_work/<username>", methods=["GET", "POST"])
+@login_required
 def add_work(username):
     '''
     Permte adicionar experiencia profissional para o usuario logado
@@ -190,6 +198,7 @@ def add_work(username):
 
 
 @app.route("/edit_course/<username>", methods=["GET", "POST"])
+@login_required
 def edit_course(username):
     '''
     Rota para edição das informações de um curso específico do usuário
@@ -211,6 +220,7 @@ def edit_course(username):
 
 
 @app.route("/edit_work/<username>", methods=["GET", "POST"])
+@login_required
 def edit_work(username):
     '''
     Edita informações de uma exp profissional do usuário
@@ -232,6 +242,7 @@ def edit_work(username):
 
 
 @app.route("/courses/<username>", methods=["GET", "POST"])
+@login_required
 def courses(username):
     '''
     Exibe os cursos de um usuário
@@ -241,6 +252,7 @@ def courses(username):
 
 
 @app.route("/works/<username>", methods=["GET", "POST"])
+@login_required
 def works(username):
     '''
     Exibe os trabalhos de um usuário
@@ -250,6 +262,7 @@ def works(username):
 
 
 @app.route("/delete_course/<int:id>", methods=["GET", "POST"])
+@login_required
 def delete_course(id):
     '''
     Permite deletar um curso específico
@@ -262,6 +275,7 @@ def delete_course(id):
 
 
 @app.route("/delete_work/<int:id>", methods=["GET", "POST"])
+@login_required
 def delete_work(id):
     '''
     Permite deletar uma exp profissional
@@ -271,3 +285,56 @@ def delete_work(id):
     db.session.commit()
 
     return render_template('works.html', username=current_user.username)
+
+
+@app.route("/company_info/<username>", methods=["GET", "POST"])
+@login_required
+def company_info(username):
+    '''
+    Verifica se o perfil é de empresa ou candidato, se for empresa
+    Carrega o formulário de informações da empresa
+    Verifica se já existem informações gravadas para empresa logada,
+    senão tiver carrega o formulário e redireciona para a url de adicionar
+    informações. Se já tiver informações salvas exibe as informações
+    '''
+    if current_user.type_user == 2:
+        form = InfoCompanyForm()
+        c = Company.query.filter_by(user_id=current_user.id).first()
+        if c:
+            return render_template('company_info.html', c=c)
+        else:
+            if request.method == "POST" and form.validate_on_submit():
+                company = Company(form.cnpj.data, form.phone.data,
+                                  form.street.data, form.number.data,
+                                  form.city.data, form.state.data,
+                                  form.cep.data, current_user.id)
+                db.session.add(company)
+                db.session.commit()
+                flash('Informações inseridas com sucesso!')
+                return redirect(url_for('company_info', username=current_user.username))
+        return render_template('add_company_info.html', form=form)
+
+
+@app.route("/edit_company_info/<username>", methods=["GET", "POST"])
+@login_required
+def edit_company_info(username):
+    '''
+    Carrega o formulário com as informações da empresa para permitir a edição
+    das informações
+    '''
+    form = EditInfoCompanyForm()
+    c = Company.query.filter_by(user_id=current_user.id).first()
+    if request.method == "POST":
+
+        c.cnpj = request.form.get("cnpj")
+        c.phone = request.form.get("phone")
+        c.street = request.form.get("street")
+        c.number = request.form.get("number")
+        c.city = request.form.get("city")
+        c.state = request.form.get("state")
+        c.cep = request.form.get("cep")
+
+        db.session.commit()
+        flash('Informações atualizadas com sucesso!')
+        return redirect(url_for('company_info', username=current_user.username))
+    return render_template('edit_company_info.html', form=c)

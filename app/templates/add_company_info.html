@@ -2,44 +2,17 @@
 
 {% block content %}
 <div class="col-md-4 col-md-offset-4">
-    <h2>Registrar</h2>
+    <h2>Informações da Empresa</h2>
     <form action="" method="POST">
         {{ form.csrf_token }}
-        <div class="form-group">
-            <label>Nome</label>
-            {{ form.name(class="form-control", placeholder="Seu nome") }}
-            {% if form.errors.name %}
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    {% for e in form.errors.name %}
-                        <li>{{ e }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
-        </div>
-
-        <div class="form-group">
-            <label>E-mail</label>
-            {{ form.email(class="form-control", placeholder="Seu e-mail") }}
-            {% if form.errors.email %}
-            <div class="alert alert-danger" role="alert">
-                <ul>
-                    {% for e in form.errors.email %}
-                        <li>{{ e }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
-        </div>
         
         <div class="form-group">
-            <label>Nome de usuário</label>
-            {{ form.username(class="form-control", placeholder="Seu usuário") }}
-            {% if form.errors.username %}
+            <label>CNPJ</label>
+            {{ form.cnpj(class="form-control") }}
+            {% if form.errors.cnpj %}
             <div class="alert alert-danger" role="alert">
                 <ul>
-                    {% for e in form.errors.username %}
+                    {% for e in form.errors.cnpj %}
                         <li>{{ e }}</li>
                     {% endfor %}
                 </ul>
@@ -48,12 +21,12 @@
         </div>
 
         <div class="form-group">
-            <label>Senha</label>
-            {{ form.password(class="form-control") }}
-            {% if form.errors.password %}
+            <label>Telefone</label>
+            {{ form.phone(class="form-control", placeholder="Seu telefone") }}
+            {% if form.errors.phone %}
             <div class="alert alert-danger" role="alert">
                 <ul>
-                    {% for e in form.errors.password %}
+                    {% for e in form.errors.phone %}
                         <li>{{ e }}</li>
                     {% endfor %}
                 </ul>
@@ -62,12 +35,12 @@
         </div>
 
         <div class="form-group">
-            <label>Confirme sua senha</label>
-            {{ form.confirm(class="form-control") }}
-            {% if form.errors.confirm %}
+            <label>Rua</label>
+            {{ form.street(class="form-control") }}
+            {% if form.errors.street %}
             <div class="alert alert-danger" role="alert">
                 <ul>
-                    {% for e in form.errors.confirm %}
+                    {% for e in form.errors.street %}
                         <li>{{ e }}</li>
                     {% endfor %}
                 </ul>
@@ -76,12 +49,12 @@
         </div>
 
         <div class="form-group">
-            <label>Tipo de usuário</label>
-            {{ form.type_user(class="form-control") }}
-            {% if form.errors.confirm %}
+            <label>Número</label>
+            {{ form.number(class="form-control") }}
+            {% if form.errors.number %}
             <div class="alert alert-danger" role="alert">
                 <ul>
-                    {% for e in form.errors.confirm %}
+                    {% for e in form.errors.number %}
                         <li>{{ e }}</li>
                     {% endfor %}
                 </ul>
@@ -89,7 +62,49 @@
             {% endif %}
         </div>
 
-        <button type="submit" class="btn btn-primary">Registrar</button>
+        <div class="form-group">
+            <label>Cidade</label>
+            {{ form.city(class="form-control") }}
+            {% if form.errors.city %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.city %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>Estado</label>
+            {{ form.state(class="form-control") }}
+            {% if form.errors.state %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.state %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>CEP</label>
+            {{ form.cep(class="form-control") }}
+            {% if form.errors.cep %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.cep %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Gravar</button>
     </form>
 </div>
- {% endblock %}
+{% endblock %}

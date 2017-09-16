@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3>Dados Pessoais de {{ current_user.name }}</h3>
+
+<table class="table table-bordered">
+    </tr>
+        <th>CNPJ</th>
+        <td>{{ c.cnpj }}</td>
+    </tr>
+    <tr>
+        <th>Telefone</th>
+        <td>{{ c.phone }}</td>
+    </tr>
+    <tr>
+        <th>Rua</th>
+        <td>{{ c.street }}</td>
+    </tr>
+    <tr>
+        <th>Número</th>
+        <td>{{ c.number }}</td>
+    </tr>
+    <tr>
+        <th>Cidade</th>
+        <td>{{ c.city }}</td>
+    </tr>
+    <tr>
+        <th>Estado</th>
+        <td>{{ c.state }}</td>
+    </tr>
+    <tr>
+        <th>CEP</th>
+        <td>{{ c.cep }}</td>
+    </tr>
+    
+</table>
+
+<a href="{{ url_for('edit_company_info', username=current_user.username) }}" class="btn btn-primary">Atualizar Informações</a>
+
+{% endblock %}

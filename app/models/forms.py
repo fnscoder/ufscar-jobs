@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, validators
+from wtforms import StringField, PasswordField, BooleanField, SelectField, validators
 from wtforms.validators import DataRequired
 
 
@@ -20,6 +20,8 @@ class RegistrationForm(FlaskForm):
         message="Informe a senha."), validators.EqualTo(
         "confirm", message="As senhas devem ser iguais")])
     confirm = PasswordField("confirm", validators=[DataRequired(
+        message="Informe a senha novamente.")])
+    type_user = SelectField("Tipo de Usuário", choices = [('1', 'Candidato'),('2', 'Empresa')], validators=[DataRequired(
         message="Informe a senha novamente.")])
 
 
@@ -136,3 +138,37 @@ class EditWorkForm(FlaskForm):
     tasks = StringField("tasks", validators=[DataRequired(
         message="Informe as atribuições do cargo.")])
     observation = StringField("observation")
+
+
+class InfoCompanyForm(FlaskForm):
+    cnpj = StringField("cnpj", validators=[DataRequired(
+        message="Informe o cnpj.")])
+    phone = StringField("phone", validators=[DataRequired(
+        message="Informe o telefone.")])
+    street = StringField("street", validators=[DataRequired(
+        message="Informe o nome da rua.")])
+    number = StringField("number", validators=[DataRequired(
+        message="Informe o número.")])
+    city = StringField("city", validators=[DataRequired(
+        message="Informe a cidade.")])
+    state = StringField("state", validators=[DataRequired(
+        message="Informe o estado.")])
+    cep = StringField("cep", validators=[DataRequired(
+        message="Informe o cep.")])
+
+
+class EditInfoCompanyForm(FlaskForm):
+    cnpj = StringField("cnpj", validators=[DataRequired(
+        message="Informe o cnpj.")])
+    phone = StringField("phone", validators=[DataRequired(
+        message="Informe o telefone.")])
+    street = StringField("street", validators=[DataRequired(
+        message="Informe o nome da rua.")])
+    number = StringField("number", validators=[DataRequired(
+        message="Informe o número.")])
+    city = StringField("city", validators=[DataRequired(
+        message="Informe a cidade.")])
+    state = StringField("state", validators=[DataRequired(
+        message="Informe o estado.")])
+    cep = StringField("cep", validators=[DataRequired(
+        message="Informe o cep.")])
