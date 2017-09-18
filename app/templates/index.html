@@ -7,7 +7,16 @@
 <div class="jumbotron">
 <h1>Bem-vindo à Ufscar Jobs</h1>
 <p class="lead">Encontrar o estágio ou emprego ideal ficou muito mais fácil. Com a Ufscar Jobs você tem acesso a todas as vagas dos principais portais de emprego em um só lugar!</p>
-<p><a class="btn btn-lg btn-success" href="{{ url_for('register') }}" role="button">Cadastre-se hoje</a></p>
+{% if current_user.is_authenticated %}
+  {% if current_user.is_user %}
+    <p><a class="btn btn-lg btn-success" href="{{ url_for('all_jobs') }}" role="button">Veja vagas disponíveis</a></p>
+  {% else %}
+    <p><a class="btn btn-lg btn-success" href="/add_job/{{ current_user.username }}" role="button">Publique uma vaga</a></p>
+  {% endif %}
+{% else %}
+  <p><a class="btn btn-lg btn-success" href="{{ url_for('register') }}" role="button">Cadastre-se hoje</a></p>
+{% endif %}
+
 </div>
 
 <div class="row marketing">

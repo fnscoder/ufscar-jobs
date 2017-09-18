@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3>VAGA</h3>
+
+<table class="table table-bordered">
+    
+    <tr>
+        <th>Título</th>
+        <th>Descrição</th>
+        <th>Empresa</th>
+    </tr>
+    
+    <tr>
+        <td>{{ j.title }}</td>
+        <td>{{ j.description }}</td>
+        <td>{{ j.company }}</td>
+    </tr>
+    
+</table>
+
+{% endblock %}

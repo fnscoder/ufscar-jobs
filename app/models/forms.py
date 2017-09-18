@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SelectField, validators
+from wtforms import StringField, PasswordField, BooleanField, SelectField, validators, TextAreaField
 from wtforms.validators import DataRequired
 
 
@@ -172,3 +172,22 @@ class EditInfoCompanyForm(FlaskForm):
         message="Informe o estado.")])
     cep = StringField("cep", validators=[DataRequired(
         message="Informe o cep.")])
+
+
+class JobForm(FlaskForm):
+    title = StringField("title", validators=[DataRequired(
+        message="Informe o título da vaga.")])
+    description = TextAreaField("description", validators=[DataRequired(
+        message="Informe a descrição da vaga.")])
+
+
+class EditJobForm(FlaskForm):
+    title = StringField("title", validators=[DataRequired(
+        message="Informe o título da vaga.")])
+    description = StringField("description", validators=[DataRequired(
+        message="Informe a descrição da vaga.")])
+
+
+class SearchForm(FlaskForm):
+    search = StringField("search", validators=[DataRequired(
+        message="Informe o termo para pesquisa")])

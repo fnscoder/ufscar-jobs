@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-4 col-md-offset-4">
+    <h2>Editar Vaga Postada</h2>
+    <form action="" method="POST">
+        {{ form.csrf_token }}       
+
+        <div class="form-group">
+            <label>Título da vaga</label>
+            <input class="form-control" type="text" name="title" value="{{ form.title }}">
+        </div>
+        <div class="form-group">
+            <label>Descrição</label>
+            <input class="form-control" type="text" name="description" value="{{ form.description }}">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Atualizar</button>
+    </form>
+</div>
+{% endblock %}

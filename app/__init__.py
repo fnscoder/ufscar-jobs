@@ -29,3 +29,4 @@ lm = LoginManager(app)
 # adiciona as tabelas, formulários e controller default da aplicação
 from app.models import tables, forms
 from app.controllers import default
+from app import scraping_infojobs

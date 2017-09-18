@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3>Candidatos cadastrados</h3>
+
+<table class="table table-bordered">
+{% for c in candidates %}
+    
+        <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Detalhes</th> 
+        </tr>
+
+        <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.email }}</td>
+            <td><a href="{{ url_for('candidate_details', id=c.id) }}">Perfil</a></td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+        </tr>
+        
+{% endfor %}
+</table>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h3>Candidato: {{ c['user'].name }}</h3>
+    <h3>E-mail: {{ c['user'].email }}</h3>
+    
+    <br>
+    <h3>Cursos:</h3>
+    <table class="table table-bordered">
+        {% for course in c['courses'] %}
+            <tr>
+                <th>Curso</th>
+                <th>Escola</th>
+                <th>Tipo</th>
+                <th>Carga horária</th>
+                <th>Conslusão</th>
+            </tr>
+            <tr>
+                <td>{{ course.course_name }}</td>
+                <td>{{ course.school_name }}</td>
+                <td>{{ course.grade }}</td>
+                <td>{{ course.course_load }}</td>
+                <td>{{ course.conclusion }}</td>
+            </tr>
+            <tr>
+                <td colspan="5"></td>
+            </tr>
+        
+        {% endfor %}
+    </table>
+
+    <br>
+    <h3>Experiência Profissional:</h3>
+    <table class="table table-bordered">
+        {% for work in c['works'] %}
+            <tr>
+                <th>Cargo</th>
+                <th>Empresa</th>
+                <th>Data de entrada</th>
+                <th>Data de saida</th>
+                <th>Tarefas</th>
+            </tr>
+                
+            <tr>
+                <td>{{ work.post }}</td>
+                <td>{{ work.company }}</td>
+                <td>{{ work.entry_date }}</td>
+                <td>{{ work.departure_date }}</td>
+                <td>{{ work.tasks }}</td>
+            </tr>
+            <tr>
+                <td colspan="5"></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

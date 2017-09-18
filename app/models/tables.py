@@ -39,7 +39,6 @@ class User(db.Model):
 
     @property
     def is_user(self):
-        print(self.type_user)
         return self.type_user == 1
 
     def __repr__(self):
