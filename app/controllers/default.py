@@ -2,11 +2,11 @@ from flask import render_template, flash, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
 
-from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm, InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm
+from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, \
+    CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm, \
+    InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm
 from app.models.tables import User, Info, Course, Work, Company, Job
 from app.scraping_infojobs import get_http, get_jobs, get_page_job
-
-import json
 
 
 @lm.user_loader
@@ -125,16 +125,19 @@ def info(username):
         else:
             if request.method == "POST" and form.validate_on_submit():
                 info = Info(form.birth_date.data, form.alternative_email.data,
-                            form.phone.data, form.cellphone.data, form.cpf.data,
-                            form.street.data, form.number.data, form.city.data,
-                            form.state.data, form.cep.data, current_user.id)
+                            form.phone.data, form.cellphone.data,
+                            form.cpf.data, form.street.data, form.number.data,
+                            form.city.data, form.state.data, form.cep.data,
+                            current_user.id)
                 db.session.add(info)
                 db.session.commit()
                 flash('Informações inseridas com sucesso!')
-                return redirect(url_for('info', username=current_user.username))
+                return redirect(url_for(
+                    'info', username=current_user.username))
         return render_template('add_info.html', form=form)
     else:
         return render_template('erro.html')
+
 
 @app.route("/edit_info/<username>", methods=["GET", "POST"])
 @login_required
@@ -164,6 +167,7 @@ def edit_info(username):
         return render_template('edit_info.html', form=i)
     else:
         return render_template('erro.html')
+
 
 @app.route("/add_course/<username>", methods=["GET", "POST"])
 @login_required
@@ -198,7 +202,8 @@ def add_work(username):
         if request.method == "POST" and form.validate_on_submit():
             work = Work(form.post.data, form.company.data,
                         form.entry_date.data, form.departure_date.data,
-                        form.tasks.data, form.observation.data, current_user.id)
+                        form.tasks.data, form.observation.data,
+                        current_user.id)
             db.session.add(work)
             db.session.commit()
             flash('Informações inseridas com sucesso!')
@@ -340,10 +345,12 @@ def company_info(username):
                 db.session.add(company)
                 db.session.commit()
                 flash('Informações inseridas com sucesso!')
-                return redirect(url_for('company_info', username=current_user.username))
+                return redirect(url_for(
+                    'company_info', username=current_user.username))
         return render_template('add_company_info.html', form=form)
     else:
         return render_template('erro.html')
+
 
 @app.route("/edit_company_info/<username>", methods=["GET", "POST"])
 @login_required
@@ -367,7 +374,8 @@ def edit_company_info(username):
 
             db.session.commit()
             flash('Informações atualizadas com sucesso!')
-            return redirect(url_for('company_info', username=current_user.username))
+            return redirect(url_for(
+                'company_info', username=current_user.username))
         return render_template('edit_company_info.html', form=c)
     else:
         return render_template('erro.html')
@@ -446,10 +454,7 @@ def delete_job(id):
 @app.route("/all_jobs", methods=["GET", "POST"])
 def all_jobs():
     j = Job.query.all()
-    if j:
-        return render_template('all_jobs.html', all_jobs=j)
-    else:
-        return render_template('erro.html')
+    return render_template('all_jobs.html', all_jobs=j)
 
 
 @app.route("/job_description/<int:id>", methods=["GET", "POST"])
@@ -464,7 +469,6 @@ def job_description(id):
         'company': company,
         'description': job.description
     }
-
     return render_template('job_description.html', j=j)
 
 
@@ -485,7 +489,6 @@ def search_outjobs(search):
     if r:
         jobs_list = get_jobs(r.text)
         jobs = get_page_job(jobs_list)
-
     return render_template('search_outjobs.html', jobs=jobs)
 
 
@@ -493,7 +496,8 @@ def search_outjobs(search):
 @login_required
 def list_candidates():
     '''
-    Exibe as vagas postadas pela empresa
+    Exibe os candidatos cadastrados
+    Exibe apenas para perfis de empresas
     '''
     if current_user.type_user == 2:
         c = User.query.filter_by(type_user=1).all()
@@ -504,7 +508,10 @@ def list_candidates():
 
 @app.route("/candidate_details/<int:id>", methods=["GET", "POST"])
 def candidate_details(id):
-
+    '''
+    Exibe os detalhes de um candidato
+    Exibe apenas para perfis de empresas
+    '''
     user = User.query.filter_by(id=id).first()
     courses = Course.query.filter_by(user_id=id)
     works = Work.query.filter_by(user_id=id)
@@ -514,5 +521,4 @@ def candidate_details(id):
         'courses': courses,
         'works': works
     }
-
     return render_template('candidate_details.html', c=candidate)

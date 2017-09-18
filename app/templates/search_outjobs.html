@@ -10,16 +10,12 @@
         <tr>
             <th>Título da vaga</th>
             <th>Descrição</th>
-            <th>Salário</th>
-            <th>Local</th>
             <th>Candidate-se</th> 
         </tr>
 
         <tr>
             <td>{{ job.title }}</td>
-            <td>{{ job.description }}</td>
-            <td>{{ job.salary }}</td>
-            <td>{{ job.local }}</td>
+            <td>Salário: {{ job.salary }} <br>Local: {{ job.local }}</td>
             <td><a href="{{ job.url }}">Saiba mais</a></td>
         </tr>
         <tr>
