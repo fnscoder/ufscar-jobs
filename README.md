@@ -17,10 +17,11 @@ Para executar o projeto é necessário:
 - Instalar o requirements.txt com o comando: <br />
 $ pip install -r requirements.txt
 
-Instalar o sgbd PostgreSQL, criar uma conexão:
+Instalar o sgbd PostgreSQL, criar um database e uma conexão:
+- database: ufscar-jobs
 - servidor: localhost
-- user: root
-- senha: root
+- user: postgres
+- senha: 123456
 
 Preparar o DB com os comandos: <br />
 $ python run.py db init <br />
@@ -30,5 +31,8 @@ $ python run.py db upgrade <br />
 Rodar o projeto: <br />
 $ gunicorn app:app
 
-O projeto estará rodando em:
+O projeto estará rodando localmente em:
 http://127.0.0.1:8000/
+
+Projeto hospedado no Heroku rodando em:
+https://ufscar-jobs.herokuapp.com/
