@@ -4,25 +4,26 @@
 
 <h3>Vagas disponíveis no site InfoJobs</h3>
 
-<table class="table table-bordered">
-{% for job in jobs %}
-    
+<table class="table table-striped mb-4">
+    <thead class="thead-inverse">    
         <tr>
             <th>Título da vaga</th>
             <th>Descrição</th>
             <th>Candidate-se</th> 
         </tr>
-
-        <tr>
-            <td>{{ job.title }}</td>
-            <td>Salário: {{ job.salary }} <br>Local: {{ job.local }}</td>
-            <td><a href="{{ job.url }}" target="_blank">Saiba mais</a></td>
-        </tr>
-        <tr>
-            <td colspan="3"></td>
-        </tr>
-        
-{% endfor %}
+    </thead>
+    <tbody>
+        {% for job in jobs %}
+            <tr>
+                <td>{{ job.title }}</td>
+                <td>Salário: {{ job.salary }} <br>Local: {{ job.local }}</td>
+                <td><a href="{{ job.url }}" target="_blank">Saiba mais</a></td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 {% endblock %}

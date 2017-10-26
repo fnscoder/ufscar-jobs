@@ -4,25 +4,24 @@
 
 <h3>Vagas disponíveis</h3>
 
-<table class="table table-bordered">
-{% for j in all_jobs %}
+<table class="table table-striped mb-4">
+    <thead class="thead-inverse">
     
         <tr>
             <th>Título da vaga</th>
             <th>Descrição</th>
             <th>Candidate-se</th> 
         </tr>
-
+    </thead>
+    <tbody>
+        {% for j in all_jobs %}
         <tr>
             <td>{{ j.title }}</td>
             <td>{{ j.description }}</td>
             <td><a href="{{ url_for('job_description', id=j.id) }}">Saiba mais</a></td>
         </tr>
-        <tr>
-            <td colspan="3"></td>
-        </tr>
-        
-{% endfor %}
+        {% endfor %}
+    </tbody>
 </table>
 
 {% endblock %}

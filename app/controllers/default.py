@@ -522,3 +522,26 @@ def candidate_details(id):
         'works': works
     }
     return render_template('candidate_details.html', c=candidate)
+
+
+@app.route("/search_insite_jobs/<job>", methods=["GET", "POST"])
+def search_insite_jobs(job):
+    '''
+    Busca as vagas no db conforme o parâmetro job passado
+    '''
+    jobs = Job.query.filter(Job.description.like("%"+job+"%")).all()
+    for j in jobs:
+        print(j)
+    return render_template('insite_jobs.html', jobs=jobs)
+
+
+@app.route("/search_candidates/<email>", methods=["GET", "POST"])
+def search_candidate(email):
+    '''
+    Busca os candidatos no db conforme o parâmetro skill passado
+    '''
+    if current_user.type_user == 2:
+        c = User.query.filter_by(email=email).all()
+        return render_template('search_candidates.html', candidates=c)
+    else:
+        return render_template('erro.html')

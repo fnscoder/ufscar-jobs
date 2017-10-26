@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3>Vagas disponíveis</h3>
+
+<table class="table table-bordered">
+{% if jobs %}
+    {% for j in jobs %}
+        
+            <tr>
+                <th>Título da vaga</th>
+                <th>Descrição</th>
+                <th>Candidate-se</th> 
+            </tr>
+
+            <tr>
+                <td>{{ j.title }}</td>
+                <td>{{ j.description }}</td>
+                <td><a href="{{ url_for('job_description', id=j.id) }}">Saiba mais</a></td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+            </tr>
+            
+    {% endfor %}
+{% else %}
+    Nenhum resultado encontrado.
+{% endif %}
+</table>
+
+{% endblock %}
+

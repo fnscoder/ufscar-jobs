@@ -4,25 +4,25 @@
 
 <h3>Candidatos cadastrados</h3>
 
-<table class="table table-bordered">
-{% for c in candidates %}
-    
+<table class="table table-striped mb-4">
+    <thead class="thead-inverse">
         <tr>
             <th>Nome</th>
             <th>E-mail</th>
             <th>Detalhes</th> 
         </tr>
-
+    </thead>
+    <tbody>
+        {% for c in candidates %}
         <tr>
             <td>{{ c.name }}</td>
             <td>{{ c.email }}</td>
             <td><a href="{{ url_for('candidate_details', id=c.id) }}">Perfil</a></td>
         </tr>
-        <tr>
-            <td colspan="3"></td>
-        </tr>
+        {% endfor %}
+    </tbody>
         
-{% endfor %}
+
 </table>
 
 {% endblock %}

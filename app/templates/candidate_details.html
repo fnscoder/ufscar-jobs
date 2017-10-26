@@ -7,8 +7,9 @@
     
     <br>
     <h3>Cursos:</h3>
-    <table class="table table-bordered">
+    <table class="table table-striped mb-4">
         {% for course in c['courses'] %}
+            <thead class="thead-inverse">
             <tr>
                 <th>Curso</th>
                 <th>Escola</th>
@@ -16,6 +17,8 @@
                 <th>Carga horária</th>
                 <th>Conslusão</th>
             </tr>
+            </thead>
+            <tbody>
             <tr>
                 <td>{{ course.course_name }}</td>
                 <td>{{ course.school_name }}</td>
@@ -23,17 +26,16 @@
                 <td>{{ course.course_load }}</td>
                 <td>{{ course.conclusion }}</td>
             </tr>
-            <tr>
-                <td colspan="5"></td>
-            </tr>
+            </tbody>
         
         {% endfor %}
     </table>
 
     <br>
     <h3>Experiência Profissional:</h3>
-    <table class="table table-bordered">
+    <table class="table table-striped mb-4">
         {% for work in c['works'] %}
+            <thead class="thead-inverse">
             <tr>
                 <th>Cargo</th>
                 <th>Empresa</th>
@@ -41,7 +43,8 @@
                 <th>Data de saida</th>
                 <th>Tarefas</th>
             </tr>
-                
+            </thead>
+            <tbody>
             <tr>
                 <td>{{ work.post }}</td>
                 <td>{{ work.company }}</td>
@@ -49,9 +52,8 @@
                 <td>{{ work.departure_date }}</td>
                 <td>{{ work.tasks }}</td>
             </tr>
-            <tr>
-                <td colspan="5"></td>
-            </tr>
+            </tbody>    
+            
         {% endfor %}
     </table>
 {% endblock %}

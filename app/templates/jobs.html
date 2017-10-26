@@ -4,15 +4,16 @@
 
 <h3>Vagas postadas pela empresa {{ current_user.name }}</h3>
 
-<table class="table table-bordered">
-    
+<table class="table table-striped mb-4">
+    <thead class="thead-inverse">
     <tr>
         <th>Título</th>
         <th>Descrição</th>
         <th>Atualizar</th>
         <th>Excluir</th> 
     </tr>
-    
+    </thead>
+    <tbody>
     {% for j in jobs %}
     <tr>
         <td>{{ j.title }}</td>
@@ -21,7 +22,7 @@
         <td><a href="{{ url_for('delete_job', id=j.id) }}"><span class="glyphicon glyphicon-trash"></span></a></td>
     </tr>
     {% endfor %}
-    
+    </tbody>
 </table>
 
 <a href="{{ url_for('add_job', username=current_user.username) }}" class="btn btn-primary">Adicionar nova vaga</a>
