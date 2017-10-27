@@ -524,24 +524,34 @@ def candidate_details(id):
     return render_template('candidate_details.html', c=candidate)
 
 
-@app.route("/search_insite_jobs/<job>", methods=["GET", "POST"])
-def search_insite_jobs(job):
+@app.route("/search_insite_jobs", methods=["GET", "POST"])
+def search_insite_jobs():
     '''
     Busca as vagas no db conforme o parâmetro job passado
     '''
-    jobs = Job.query.filter(Job.description.like("%"+job+"%")).all()
-    for j in jobs:
-        print(j)
-    return render_template('insite_jobs.html', jobs=jobs)
-
-
-@app.route("/search_candidates/<email>", methods=["GET", "POST"])
-def search_candidate(email):
-    '''
-    Busca os candidatos no db conforme o parâmetro skill passado
-    '''
-    if current_user.type_user == 2:
-        c = User.query.filter_by(email=email).all()
-        return render_template('search_candidates.html', candidates=c)
+    form = SearchForm()
+    if request.method == "POST":
+        job = form.search.data
+        jobs = Job.query.filter(Job.description.like("%"+job+"%")).all()
+        for j in jobs:
+            print(j)
+        return render_template('found_insite_jobs.html', jobs=jobs)
     else:
-        return render_template('erro.html')
+        return render_template('search_insite_jobs.html', form=form)
+
+
+@app.route("/search_candidates", methods=["GET", "POST"])
+def search_candidates():
+    form = SearchForm()
+    print('entrei no search')
+    if request.method == "POST":
+        print('metodo post')
+        if current_user.type_user == 2:
+            print('usuario tipo 2')
+            c = User.query.filter_by(email=form.search.data).all()
+            print(c)
+            return render_template('found_candidates.html', candidates=c)
+        else:
+            return render_template('erro.html')
+    print("metodo get")
+    return render_template('search_candidates.html', form=form)

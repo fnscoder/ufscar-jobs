@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3>Candidatos encontrados</h3>
+
+<table class="table table-striped mb-4">
+{% if candidates %}
+    {% for c in candidates %}
+            
+            <thead class="thead-inverse">
+                <tr>
+                    <th>Nome do candidato</th>
+                    <th>Descrição</th>
+                    <th>Candidate-se</th> 
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.email }}</td>
+                    <td><a href="{{ url_for('candidate_details', id=c.id) }}">Saiba mais</a></td>
+                </tr>
+            </tbody>
+            
+    {% endfor %}
+{% else %}
+    Nenhum resultado encontrado.
+{% endif %}
+</table>
+
+{% endblock %}
+

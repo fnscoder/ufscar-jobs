@@ -54,6 +54,10 @@
         </nav>
         <h3 class="text-muted">Ufscar | Jobs | {{ current_user.name }}</h3>
         <h4><a href="{{ url_for('search_jobs') }}">Buscar vagas em outros sites</a></h4>
+        <h4><a href="{{ url_for('search_insite_jobs') }}">Buscar vagas neste site</a></h4>
+        {% if current_user.is_company %}
+          <h4><a href="{{ url_for('search_candidates') }}">Buscar candidatos por e-mail</a></h4>
+        {% endif %}
       </div>
 
       

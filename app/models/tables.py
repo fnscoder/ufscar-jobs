@@ -41,6 +41,10 @@ class User(db.Model):
     def is_user(self):
         return self.type_user == 1
 
+    @property
+    def is_company(self):
+        return self.type_user == 2
+    
     def __repr__(self):
         return "<User %r>" % self.username
 
