@@ -1,6 +1,6 @@
 # [ufscar-jobs](https://ufscar-jobs.herokuapp.com/)
 
-## Desenvolvimento de Projetos e Sistemas 1
+## Desenvolvimento de Projetos e Sistemas 2
 
 ### Integrantes do Grupo 01
 - FELIPE NOGUEIRA DE SOUZA 581038
@@ -19,10 +19,11 @@ Para executar o projeto é necessário:
 $ pip install -r requirements.txt
 
 Para usar o PostgreSQL Local
-Instalar o sgbd PostgreSQL, criar uma conexão:
+Instalar o sgbd PostgreSQL, criar um database e uma conexão:
+- database: ufscar-jobs
 - servidor: localhost
-- user: root
-- senha: root
+- user: postgres
+- senha: 123456
 
 Preparar o DB com os comandos: <br />
 $ python run.py db init <br />
@@ -34,3 +35,7 @@ $ python run.py runserver
 
 O projeto estará rodando em:
 http://127.0.0.1:5000/
+
+Projeto hospedado no Heroku rodando em:
+https://ufscar-jobs.herokuapp.com/
+>>>>>>> 68a02ddf57a5215036de84f082b8b7346eacc731
