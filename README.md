@@ -14,9 +14,11 @@ Desenvolvido utilizando a linguagem Python e o framework web Flask.
 Para executar o projeto é necessário:
 - Python 3.6
 - (Preferencialmente) Instalar o virtualenv e virtualenv-wrapper, criar um ambiente virtual e ativá-lo
+- [Instalar WeasyPrint](http://weasyprint.readthedocs.io/en/latest/install.html#linux)
 - Instalar o requirements.txt com o comando: <br />
 $ pip install -r requirements.txt
 
+Para usar o PostgreSQL Local
 Instalar o sgbd PostgreSQL, criar uma conexão:
 - servidor: localhost
 - user: root
@@ -28,7 +30,7 @@ $ python run.py db migrate <br />
 $ python run.py db upgrade <br />
 
 Rodar o projeto: <br />
-$ gunicorn app:app
+$ python run.py runserver
 
 O projeto estará rodando em:
-http://127.0.0.1:8000/
+http://127.0.0.1:5000/
