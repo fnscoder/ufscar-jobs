@@ -6,7 +6,7 @@ from app import app, db, lm, mail, s
 
 from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, \
     CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm, \
-    InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm, ContactForm
+    InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm, ContactForm, EmailForm, NewPasswordForm
 from app.models.tables import User, Info, Course, Work, Company, Job
 from app.scraping_infojobs import get_http, get_jobs, get_page_job
 
@@ -569,3 +569,47 @@ def contact():
         flash('Mensagem envida!')
         return redirect(url_for('index'))
     return render_template('contact.html', form=form)
+
+
+@app.route("/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+    form = EmailForm()
+    if request.method == "POST" and form.validate_on_submit():
+        email = request.form['email']
+
+        if User.query.filter_by(email=email).first():
+
+            token = s.dumps(email, salt='forgot_password')
+            msg = Message('[Ufscar Jobs] - Esqueceu sua senha', sender='ufscarjobs@gmail.com', recipients=[email])
+            link = url_for('new_password', token=token, _external=True)
+            msg.body = 'Para definir uma nova senha clique no link abaixo:\n{}\nSe o link não funcionar copie e cole o endereço em seu navegador'.format(link)
+            mail.send(msg)
+            flash('Mensagem envida! Verifique seu e-mail.')
+            return redirect(url_for('index'))
+        flash('E-mail não encontrado.')
+        return redirect(url_for('forgot_password'))
+        
+    return render_template('forgot_password.html', form=form)
+
+
+@app.route('/new_password/<token>', methods=["GET", "POST"])
+def new_password(token):
+    form = NewPasswordForm()
+    try:
+        email = s.loads(token, salt='forgot_password', max_age=3600)
+        if request.method == "POST" and form.validate_on_submit():
+            password = request.form['password']
+
+            user = User.query.filter_by(email=email).first()
+            user.password = password
+            db.session.commit()
+            flash('Senha alterada com sucesso!')
+            return redirect(url_for('index'))
+            
+        return render_template('new_password.html', form=form)
+                
+    except SignatureExpired:
+        flash('Solicitação expirada!')
+        return redirect(url_for('index'))
+        
+    

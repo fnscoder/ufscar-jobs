@@ -202,3 +202,16 @@ class ContactForm(FlaskForm):
         message="Informe o assunto.")])
     message = TextAreaField("message", [validators.DataRequired(
         message="Informe a mensagem.")])
+
+
+class EmailForm(FlaskForm):
+    email = StringField("email", validators=[DataRequired(
+        message="Informe o e-mail.")])
+
+
+class NewPasswordForm(FlaskForm):
+    password = PasswordField("password", [validators.DataRequired(
+        message="Informe a senha."), validators.EqualTo(
+        "confirm", message="As senhas devem ser iguais")])
+    confirm = PasswordField("confirm", validators=[DataRequired(
+        message="Informe a senha novamente.")])
