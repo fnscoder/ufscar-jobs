@@ -1,7 +1,4 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
+<h1>Relatório de vagas</h1>
 <h3>Vagas disponíveis</h3>
 
 <table class="table table-striped mb-4">
@@ -10,7 +7,7 @@
         <tr>
             <th>Título da vaga</th>
             <th>Descrição</th>
-            <th>Candidate-se</th> 
+            <th>Empresa</th>
         </tr>
     </thead>
     <tbody>
@@ -18,12 +15,8 @@
         <tr>
             <td>{{ j.title }}</td>
             <td>{{ j.description }}</td>
-            <td><a href="{{ url_for('job_description', id=j.id) }}">Saiba mais</a></td>
+            <td>{{ j.user.name }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<a href="{{ url_for('jobs_pdf') }}">Gerar pdf</a>
-
-{% endblock %}
-

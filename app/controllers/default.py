@@ -2,6 +2,7 @@ from flask import render_template, flash, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from flask_weasyprint import HTML, render_pdf
 from app import app, db, lm, mail, s
 
 from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, \
@@ -495,18 +496,14 @@ def search_outjobs(search):
 
 
 @app.route("/list_candidates", methods=["GET", "POST"])
-@login_required
 def list_candidates():
     '''
     Exibe os candidatos cadastrados
     Exibe apenas para perfis de empresas
     '''
-    if current_user.type_user == 2:
-        c = User.query.filter_by(type_user=1).all()
-        return render_template('candidates.html', candidates=c)
-    else:
-        return render_template('erro.html')
-
+    c = User.query.filter_by(type_user=1).all()
+    return render_template('candidates.html', candidates=c)
+   
 
 @app.route("/candidate_details/<int:id>", methods=["GET", "POST"])
 def candidate_details(id):
@@ -612,4 +609,28 @@ def new_password(token):
         flash('Solicitação expirada!')
         return redirect(url_for('index'))
         
-    
+
+@app.route("/all_jobs_pdf", methods=["GET", "POST"])
+def all_jobs_pdf():
+    j = Job.query.all()
+    return render_template('all_jobs_pdf.html', all_jobs=j)
+
+
+@app.route('/jobs.pdf')
+def jobs_pdf():
+    return render_pdf(url_for('all_jobs_pdf'))
+
+
+@app.route("/list_candidates_pdf", methods=["GET", "POST"])
+def list_candidates_pdf():
+    '''
+    Exibe os candidatos cadastrados
+    Exibe apenas para perfis de empresas
+    '''
+    c = User.query.filter_by(type_user=1).all()
+    return render_template('candidates_pdf.html', candidates=c)
+
+
+@app.route('/candidates.pdf')
+def candidates_pdf():
+    return render_pdf(url_for('list_candidates_pdf'))
