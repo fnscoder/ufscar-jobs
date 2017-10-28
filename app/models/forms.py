@@ -191,3 +191,14 @@ class EditJobForm(FlaskForm):
 class SearchForm(FlaskForm):
     search = StringField("search", validators=[DataRequired(
         message="Informe o termo para pesquisa")])
+
+
+class ContactForm(FlaskForm):
+    name = StringField("name", validators=[DataRequired(
+        message="Informe o nome.")])
+    email = StringField("email", validators=[DataRequired(
+        message="Informe o e-mail.")])
+    subject = StringField("subject", validators=[DataRequired(
+        message="Informe o assunto.")])
+    message = TextAreaField("message", [validators.DataRequired(
+        message="Informe a mensagem.")])

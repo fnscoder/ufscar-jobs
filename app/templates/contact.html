@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-4 col-md-offset-4">
+    <h2>Contato</h2>
+    <form action="" method="POST">
+
+    {{ form.csrf_token }}
+        <div class="form-group">
+            <label>Nome</label>
+            {{ form.name(class="form-control", placeholder="Nome") }}
+            {% if form.errors.name %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.name %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>E-mail</label>
+            {{ form.email(class="form-control", placeholder="E-mail") }}
+            {% if form.errors.email %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.email %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label>Assunto</label>
+            {{ form.subject(class="form-control", placeholder="Informe o assunto") }}
+            {% if form.errors.subject %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.subject %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>Mensagem</label>
+            {{ form.message(class="form-control", placeholder="Digite a mensagem aqui") }}
+            {% if form.errors.message %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.message %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Gravar</button>
+    </form>
+</div>
+{% endblock %}

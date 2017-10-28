@@ -4,10 +4,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 
 app = Flask(__name__)
 app.config.from_object('config')
+
+mail = Mail(app)
+s = URLSafeTimedSerializer('total-secret')
 
 # Utiliza o SQLAlchemy para criar e gerenciar o db e suas operações
 db = SQLAlchemy(app)

@@ -9,3 +9,10 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 # chave secreta para os formulários
 SECRET_KEY = 'pJMlGrhStBPmGhJlRs4BL'
+
+MAIL_SERVER='smtp.gmail.com'
+MAIL_USERNAME='ufscarjobs@gmail.com'
+MAIL_PASSWORD='Eadsead123'
+MAIL_PORT=465
+MAIL_USE_SSL=True
+MAIL_USE_TLS=False

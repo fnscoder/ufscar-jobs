@@ -1,10 +1,12 @@
 from flask import render_template, flash, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user, login_required
-from app import app, db, lm
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from app import app, db, lm, mail, s
 
 from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, \
     CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm, \
-    InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm
+    InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm, ContactForm
 from app.models.tables import User, Info, Course, Work, Company, Job
 from app.scraping_infojobs import get_http, get_jobs, get_page_job
 
@@ -543,15 +545,27 @@ def search_insite_jobs():
 @app.route("/search_candidates", methods=["GET", "POST"])
 def search_candidates():
     form = SearchForm()
-    print('entrei no search')
     if request.method == "POST":
-        print('metodo post')
         if current_user.type_user == 2:
-            print('usuario tipo 2')
             c = User.query.filter_by(email=form.search.data).all()
-            print(c)
             return render_template('found_candidates.html', candidates=c)
         else:
             return render_template('erro.html')
-    print("metodo get")
     return render_template('search_candidates.html', form=form)
+
+
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+    form = ContactForm()
+    if request.method == "POST" and form.validate_on_submit():
+        
+        name = request.form['name']
+        email = request.form['email']
+        subject = '[Contato - UfscarJobs] - {}'.format(request.form['subject'])
+        message = request.form['message']
+        msg = Message(subject, sender=email, recipients=['ufscarjobs@gmail.com'])
+        msg.body = 'Nova mensagem de {}\nE-mail de contato: {}\nAssunto: {}\nMensagem: {}'.format(name, email, subject, message)
+        mail.send(msg)
+        flash('Mensagem envida!')
+        return redirect(url_for('index'))
+    return render_template('contact.html', form=form)
