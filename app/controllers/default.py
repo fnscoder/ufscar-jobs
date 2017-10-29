@@ -64,12 +64,17 @@ def register():
     '''
     form = RegistrationForm()
     if request.method == "POST" and form.validate_on_submit():
-        user = User(form.name.data, form.email.data, form.username.data,
-                    form.password.data, form.type_user.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('Obrigado por se registrar!')
-        return redirect(url_for('login'))
+        try:
+            user = User(form.name.data, form.email.data, form.username.data,
+                        form.password.data, form.type_user.data)
+            db.session.add(user)
+            db.session.commit()
+            flash('Obrigado por se registrar!')
+            return redirect(url_for('login'))
+        except:
+            flash('Não foi possível realizar o cadastro. Verifique os dados e tente novamente.')
+            flash('O nome de usuário e o e-mail devem ser únicos.')
+            return render_template('register.html', form=form) 
     return render_template('register.html', form=form)
 
 
