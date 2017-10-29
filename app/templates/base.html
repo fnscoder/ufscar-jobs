@@ -9,13 +9,9 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <style type="text/css">
-      div#loading {
-      display: none;
-      cursor: wait;
-      }
-    </style>
+    <!-- My css file -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -32,17 +28,42 @@
           <ul class="nav nav-pills pull-right">
             <li role="presentation" class="active"><a href="{{ url_for('index') }}">Home</a></li>
             {% if current_user.is_authenticated %}
-              <li><a href="/profile/{{ current_user.username }}">Perfil</a></li>
-              {% if current_user.is_user %}
-                <li><a href="/info/{{ current_user.username }}">Dados Pessoais</a></li>
-                <li><a href="/courses/{{ current_user.username }}">Cursos</a></li>
-                <li><a href="/works/{{ current_user.username }}">Experiência Profissional</a></li>
-              {% else %}
-                <li><a href="/company_info/{{ current_user.username }}">Dados Cadastrais</a></li>
-                <li><a href="/add_job/{{ current_user.username }}">Cadastrar Vaga</a></li>
-                <li><a href="/jobs/{{ current_user.username }}">Vagas Cadastradas</a></li>
-                <li><a href="/list_candidates">Ver Candidatos</a></li>
-              {% endif %}
+            <li>
+              <!-- Single button -->
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Perfil <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="/profile/{{ current_user.username }}">Perfil</a></li>
+                  {% if current_user.is_user %}
+                    <li><a href="/info/{{ current_user.username }}">Dados Pessoais</a></li>
+                    <li><a href="/courses/{{ current_user.username }}">Cursos</a></li>
+                    <li><a href="/works/{{ current_user.username }}">Experiência Profissional</a></li>
+                  {% else %}
+                    <li><a href="/company_info/{{ current_user.username }}">Dados Cadastrais</a></li>
+                    <li><a href="/add_job/{{ current_user.username }}">Cadastrar Vaga</a></li>
+                    <li><a href="/jobs/{{ current_user.username }}">Vagas Cadastradas</a></li>
+                    <li><a href="/list_candidates">Ver Candidatos</a></li>
+                  {% endif %}
+                </ul>
+              </div>
+              </li>
+              <li>
+              <!-- Single button -->
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Buscar <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ url_for('search_jobs') }}">Vagas em outros sites</a></li>
+                  <li><a href="{{ url_for('search_insite_jobs') }}">Vagas neste site</a></li>
+                  {% if current_user.is_company %}
+                    <li><a href="{{ url_for('search_candidates') }}">Candidatos por e-mail</a></li>
+                  {% endif %}
+                </ul>
+              </div>
+              </li>
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
 
             {% else %}
@@ -54,14 +75,9 @@
           </ul>
         </nav>
         <h3 class="text-muted">Ufscar | Jobs | {{ current_user.name }}</h3>
-        <h4><a href="{{ url_for('search_jobs') }}">Buscar vagas em outros sites</a></h4>
-        <h4><a href="{{ url_for('search_insite_jobs') }}">Buscar vagas neste site</a></h4>
-        {% if current_user.is_company %}
-          <h4><a href="{{ url_for('search_candidates') }}">Buscar candidatos por e-mail</a></h4>
-        {% endif %}
+        
       </div>
 
-      
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             <div class="alert alert-warning">
@@ -79,7 +95,6 @@
       {% endblock %}
 
     </div> <!-- /container -->
-
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
