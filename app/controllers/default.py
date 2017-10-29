@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_weasyprint import HTML, render_pdf
-from app import app, db, lm, mail, s
+from app import app, db, lm, mail, s, bcrypt
 
 from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, \
     CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm, \
@@ -43,7 +43,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user and user.password == form.password.data:
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             flash("Logado com sucesso!")
             return redirect(url_for("index"))
@@ -65,8 +65,9 @@ def register():
     form = RegistrationForm()
     if request.method == "POST" and form.validate_on_submit():
         try:
+            password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             user = User(form.name.data, form.email.data, form.username.data,
-                        form.password.data, form.type_user.data)
+                        password, form.type_user.data)
             db.session.add(user)
             db.session.commit()
             flash('Obrigado por se registrar!')

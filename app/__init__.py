@@ -5,12 +5,14 @@ from flask_script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
 from flask_mail import Mail, Message
+from flask_bcrypt import Bcrypt
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 
 app = Flask(__name__)
 app.config.from_object('config')
 
+bcrypt = Bcrypt(app)
 mail = Mail(app)
 s = URLSafeTimedSerializer('total-secret')
 
