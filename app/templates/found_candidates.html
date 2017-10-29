@@ -12,7 +12,7 @@
                 <tr>
                     <th>Nome do candidato</th>
                     <th>Descrição</th>
-                    <th>Candidate-se</th> 
+                    <th>Detalhes</th> 
                 </tr>
             </thead>
 
@@ -20,7 +20,7 @@
                 <tr>
                     <td>{{ c.name }}</td>
                     <td>{{ c.email }}</td>
-                    <td><a href="{{ url_for('candidate_details', id=c.id) }}">Saiba mais</a></td>
+                    <td><a href="{{ url_for('candidate_details', id=c.id) }}">Ver perfil</a></td>
                 </tr>
             </tbody>
             

@@ -631,7 +631,6 @@ def jobs_pdf():
 def list_candidates_pdf():
     '''
     Exibe os candidatos cadastrados
-    Exibe apenas para perfis de empresas
     '''
     c = User.query.filter_by(type_user=1).all()
     return render_template('candidates_pdf.html', candidates=c)

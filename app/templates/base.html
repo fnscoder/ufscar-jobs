@@ -40,6 +40,7 @@
                     <li><a href="/info/{{ current_user.username }}">Dados Pessoais</a></li>
                     <li><a href="/courses/{{ current_user.username }}">Cursos</a></li>
                     <li><a href="/works/{{ current_user.username }}">Experiência Profissional</a></li>
+                    <li><a href="/candidate_details/{{ current_user.id }}">CV Completo</a></li>
                   {% else %}
                     <li><a href="/company_info/{{ current_user.username }}">Dados Cadastrais</a></li>
                     <li><a href="/add_job/{{ current_user.username }}">Cadastrar Vaga</a></li>
