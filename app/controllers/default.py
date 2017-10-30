@@ -539,8 +539,6 @@ def search_insite_jobs():
     if request.method == "POST":
         job = form.search.data
         jobs = Job.query.filter(Job.description.like("%"+job+"%")).all()
-        for j in jobs:
-            print(j)
         return render_template('found_insite_jobs.html', jobs=jobs)
     else:
         return render_template('search_insite_jobs.html', form=form)
@@ -548,10 +546,14 @@ def search_insite_jobs():
 
 @app.route("/search_candidates", methods=["GET", "POST"])
 def search_candidates():
+    '''
+    Busca candidatos conforme o email informado, acessível apenas para usuários
+    do tipo 2, usuários empresa.
+    '''
     form = SearchForm()
     if request.method == "POST":
         if current_user.type_user == 2:
-            c = User.query.filter_by(email=form.search.data).all()
+            c = User.query.filter_by(email=form.search.data).first()
             return render_template('found_candidates.html', candidates=c)
         else:
             return render_template('erro.html')
@@ -560,6 +562,10 @@ def search_candidates():
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
+    '''
+    Recebe as informações do formulário de contato e envia por email para
+    o email configurado para a aplicação
+    '''
     form = ContactForm()
     if request.method == "POST" and form.validate_on_submit():
         
@@ -577,6 +583,10 @@ def contact():
 
 @app.route("/forgot_password", methods=["GET", "POST"])
 def forgot_password():
+    '''
+    Envia um email com um token para que o usuário crie uma nova senha
+    Envia apenas se o email informado for cadastrado no sistema
+    '''
     form = EmailForm()
     if request.method == "POST" and form.validate_on_submit():
         email = request.form['email']
@@ -598,6 +608,10 @@ def forgot_password():
 
 @app.route('/new_password/<token>', methods=["GET", "POST"])
 def new_password(token):
+    '''
+    Verifica se o token informado é válido, se está dentro do prazo de validade
+    recupera o email e localiza o usuário para alterar a senha
+    '''
     form = NewPasswordForm()
     try:
         email = s.loads(token, salt='forgot_password', max_age=3600)
@@ -616,6 +630,11 @@ def new_password(token):
         flash('Solicitação expirada!')
         return redirect(url_for('index'))
         
+
+'''
+Métodos que geram os relatórios em pdf para facilitar a impressão    
+'''
+
 
 @app.route("/all_jobs_pdf", methods=["GET", "POST"])
 def all_jobs_pdf():

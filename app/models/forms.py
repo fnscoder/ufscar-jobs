@@ -200,7 +200,7 @@ class ContactForm(FlaskForm):
         message="Informe o e-mail.")])
     subject = StringField("subject", validators=[DataRequired(
         message="Informe o assunto.")])
-    message = TextAreaField("message", [validators.DataRequired(
+    message = TextAreaField("message", validators=[DataRequired(
         message="Informe a mensagem.")])
 
 
