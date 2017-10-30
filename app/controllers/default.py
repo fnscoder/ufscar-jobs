@@ -109,7 +109,8 @@ def edit_profile(username):
         current_user.name = form.name.data
         current_user.email = form.email.data
         current_user.username = form.username.data
-        current_user.password = form.password.data
+        password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        current_user.password = password
 
         db.session.commit()
         flash('Atualizado!')
