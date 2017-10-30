@@ -553,8 +553,8 @@ def search_candidates():
     form = SearchForm()
     if request.method == "POST":
         if current_user.type_user == 2:
-            c = User.query.filter_by(email=form.search.data).first()
-            return render_template('found_candidates.html', candidates=c)
+            candidate = User.query.filter_by(email=form.search.data).first()
+            return render_template('found_candidates.html', candidate=candidate)
         else:
             return render_template('erro.html')
     return render_template('search_candidates.html', form=form)

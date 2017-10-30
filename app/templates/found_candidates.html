@@ -5,7 +5,7 @@
 <h3>Candidatos encontrados</h3>
 
 <table class="table table-striped mb-4">
-{% if candidates %}
+{% if candidate %}
             
     <thead class="thead-inverse">
         <tr>
@@ -17,9 +17,9 @@
 
     <tbody>
         <tr>
-            <td>{{ c.name }}</td>
-            <td>{{ c.email }}</td>
-            <td><a href="{{ url_for('candidate_details', id=c.id) }}">Ver perfil</a></td>
+            <td>{{ candidate.name }}</td>
+            <td>{{ candidate.email }}</td>
+            <td><a href="{{ url_for('candidate_details', id=candidate.id) }}">Ver perfil</a></td>
         </tr>
     </tbody>
 {% else %}
