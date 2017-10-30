@@ -601,7 +601,7 @@ def new_password(token):
     try:
         email = s.loads(token, salt='forgot_password', max_age=3600)
         if request.method == "POST" and form.validate_on_submit():
-            password = request.form['password']
+            password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
 
             user = User.query.filter_by(email=email).first()
             user.password = password
