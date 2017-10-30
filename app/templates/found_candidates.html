@@ -7,23 +7,21 @@
 <table class="table table-striped mb-4">
 {% if candidates %}
             
-            <thead class="thead-inverse">
-                <tr>
-                    <th>Nome do candidato</th>
-                    <th>Descrição</th>
-                    <th>Detalhes</th> 
-                </tr>
-            </thead>
+    <thead class="thead-inverse">
+        <tr>
+            <th>Nome do candidato</th>
+            <th>Descrição</th>
+            <th>Detalhes</th> 
+        </tr>
+    </thead>
 
-            <tbody>
-                <tr>
-                    <td>{{ c.name }}</td>
-                    <td>{{ c.email }}</td>
-                    <td><a href="{{ url_for('candidate_details', id=c.id) }}">Ver perfil</a></td>
-                </tr>
-            </tbody>
-            
-    {% endfor %}
+    <tbody>
+        <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.email }}</td>
+            <td><a href="{{ url_for('candidate_details', id=c.id) }}">Ver perfil</a></td>
+        </tr>
+    </tbody>
 {% else %}
     Nenhum resultado encontrado.
 {% endif %}
