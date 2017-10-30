@@ -18,13 +18,15 @@ Para executar o projeto é necessário:
 - Instalar o requirements.txt com o comando: <br />
 $ pip install -r requirements.txt
 
+O projeto está configurado para rodar com o banco de dados PostgreSQL remoto hospedado no Heroku.
 Para usar o PostgreSQL Local
-Instalar o sgbd PostgreSQL, criar um database e uma conexão:
+Instalar o sgbd PostgreSQL, criar um database e uma conexão e alterar as configurações de conexão no arquivo config.py:
 - database: ufscar-jobs
 - servidor: localhost
 - user: postgres
 - senha: 123456
 
+Se for rodar o projeto com banco local é necessário rodar os seguintes comandos para preparar o DB
 Preparar o DB com os comandos: <br />
 $ python run.py db init <br />
 $ python run.py db migrate <br />
@@ -38,4 +40,3 @@ http://127.0.0.1:5000/
 
 Projeto hospedado no Heroku rodando em:
 https://ufscar-jobs.herokuapp.com/
->>>>>>> 68a02ddf57a5215036de84f082b8b7346eacc731
