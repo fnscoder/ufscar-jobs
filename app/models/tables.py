@@ -12,7 +12,7 @@ class User(db.Model):
     name = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), nullable=False, unique=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.Binary(100), nullable=False)
     type_user = db.Column(db.Integer, nullable=False)
 
     def __init__(self, name, email, username, password, type_user):
