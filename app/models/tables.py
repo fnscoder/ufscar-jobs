@@ -189,3 +189,26 @@ class Job(db.Model):
 
     def __repr__(self):
         return "<Job %r>" % self.title
+
+
+class Evaluation(db.Model):
+    __tablename__ = "evaluations"
+
+    id = db.Column(db.Integer, primary_key=True)
+    enviroment = db.Column(db.Integer)
+    salary = db.Column(db.Integer)
+    recognition = db.Column(db.Integer)
+    innovation = db.Column(db.Integer)
+    
+    company_id = db.Column(db.Integer, db.ForeignKey('companies.id'))
+    company = db.relationship('Company', foreign_keys=company_id)
+
+    def __init__(self, enviroment, salary, recognition, innovation, company_id):
+        self.enviroment = enviroment
+        self.salary = salary
+        self.recognition = recognition
+        self.innovation = innovation
+        self.company_id = company_id
+        
+    def __repr__(self):
+        return "<Evaluation %r>" % self.company_id
