@@ -129,7 +129,7 @@ def info(username):
     senão tiver carrega o formulário e redireciona para a url de adicionar
     informações. Se já tiver informações salvas exibe as informações
     '''
-    if current_user.type_user == 1:
+    if current_user.is_user:
         form = InfoForm()
         i = Info.query.filter_by(user_id=current_user.id).first()
         if i:
@@ -158,7 +158,7 @@ def edit_info(username):
     Carrega o formulário com as informações do usuário para permitir a edição
     das informações
     '''
-    if current_user.type_user == 1:
+    if current_user.is_user:
         form = EditInfoForm()
         i = Info.query.filter_by(user_id=current_user.id).first()
         if request.method == "POST":
@@ -187,7 +187,7 @@ def add_course(username):
     '''
     Permite adicionar cursos para o usuário logado
     '''
-    if current_user.type_user == 1:
+    if current_user.is_user:
         form = CourseForm()
         if request.method == "POST" and form.validate_on_submit():
             course = Course(form.course_name.data, form.school_name.data,
@@ -209,7 +209,7 @@ def add_work(username):
     '''
     Permte adicionar experiencia profissional para o usuario logado
     '''
-    if current_user.type_user == 1:
+    if current_user.is_user:
         form = WorkForm()
         if request.method == "POST" and form.validate_on_submit():
             work = Work(form.post.data, form.company.data,
@@ -231,7 +231,7 @@ def edit_course(username):
     '''
     Rota para edição das informações de um curso específico do usuário
     '''
-    if current_user.type_user == 1:
+    if current_user.is_user:
         form = EditCourseForm()
         c = Course.query.filter_by(user_id=current_user.id).first()
         if request.method == "POST":
@@ -256,7 +256,7 @@ def edit_work(username):
     '''
     Edita informações de uma exp profissional do usuário
     '''
-    if current_user.type_user == 1:
+    if current_user.is_user:
         form = EditWorkForm()
         w = Work.query.filter_by(user_id=current_user.id).first()
         if request.method == "POST":
@@ -281,7 +281,7 @@ def courses(username):
     '''
     Exibe os cursos de um usuário
     '''
-    if current_user.type_user == 1:
+    if current_user.is_user:
         my_courses = Course.query.filter_by(user_id=current_user.id)
         return render_template('courses.html', courses=my_courses)
     else:
@@ -294,7 +294,7 @@ def works(username):
     '''
     Exibe os trabalhos de um usuário
     '''
-    if current_user.type_user == 1:
+    if current_user.is_user:
         my_works = Work.query.filter_by(user_id=current_user.id)
         return render_template('works.html', works=my_works)
     else:
@@ -307,7 +307,7 @@ def delete_course(id):
     '''
     Permite deletar um curso específico
     '''
-    if current_user.type_user == 1:
+    if current_user.is_user:
         c = Course.query.filter_by(id=id).first()
         db.session.delete(c)
         db.session.commit()
@@ -323,7 +323,7 @@ def delete_work(id):
     '''
     Permite deletar uma exp profissional
     '''
-    if current_user.type_user == 1:
+    if current_user.is_user:
         w = Work.query.filter_by(id=id).first()
         db.session.delete(w)
         db.session.commit()
@@ -343,7 +343,7 @@ def company_info(username):
     senão tiver carrega o formulário e redireciona para a url de adicionar
     informações. Se já tiver informações salvas exibe as informações
     '''
-    if current_user.type_user == 2:
+    if current_user.is_company:
         form = InfoCompanyForm()
         c = Company.query.filter_by(user_id=current_user.id).first()
         if c:
@@ -371,7 +371,7 @@ def edit_company_info(username):
     Carrega o formulário com as informações da empresa para permitir a edição
     das informações
     '''
-    if current_user.type_user == 2:
+    if current_user.is_company:
         form = EditInfoCompanyForm()
         c = Company.query.filter_by(user_id=current_user.id).first()
         if request.method == "POST":
@@ -399,7 +399,7 @@ def add_job(username):
     '''
     Permite que a empresa adicione uma vaga
     '''
-    if current_user.type_user == 2:
+    if current_user.is_company:
         form = JobForm()
         if request.method == "POST" and form.validate_on_submit():
             job = Job(form.title.data, form.description.data, current_user.id)
@@ -418,7 +418,7 @@ def jobs(username):
     '''
     Exibe as vagas postadas pela empresa
     '''
-    if current_user.type_user == 2:
+    if current_user.is_company:
         j = Job.query.filter_by(user_id=current_user.id)
         return render_template('jobs.html', jobs=j)
     else:
@@ -431,7 +431,7 @@ def edit_job(id):
     '''
     Edita informações de uma vaga postada
     '''
-    if current_user.type_user == 2:
+    if current_user.is_company:
         form = EditJobForm()
         j = Job.query.filter_by(id=id).first()
         if request.method == "POST":
@@ -453,7 +453,7 @@ def delete_job(id):
     '''
     Permite deletar uma exp profissional
     '''
-    if current_user.type_user == 2:
+    if current_user.is_company:
         j = Job.query.filter_by(id=id).first()
         db.session.delete(j)
         db.session.commit()
@@ -556,7 +556,7 @@ def search_candidates():
     '''
     form = SearchForm()
     if request.method == "POST":
-        if current_user.type_user == 2:
+        if current_user.is_company:
             candidate = User.query.filter_by(email=form.search.data).first()
             return render_template('found_candidates.html', candidate=candidate)
         else:
@@ -670,7 +670,6 @@ def candidates_pdf():
 
 
 @app.route("/evaluate", methods=["GET", "POST"])
-@login_required
 def evaluate():
     companies = User.query.filter_by(type_user=2).all()
     if request.method == "POST":
@@ -681,7 +680,6 @@ def evaluate():
 
 
 @app.route("/evaluate_company/<id>", methods=["GET", "POST"])
-@login_required
 def evaluate_company(id):
     form = EvaluationForm()
     if request.method == "POST" and form.validate_on_submit():
@@ -694,7 +692,6 @@ def evaluate_company(id):
 
 
 @app.route("/evaluations", methods=["GET", "POST"])
-@login_required
 def evaluations():
     companies = User.query.filter_by(type_user=2).all()
     if request.method == "POST":
@@ -705,7 +702,6 @@ def evaluations():
 
 
 @app.route("/company_evaluations/<id>", methods=["GET", "POST"])
-@login_required
 def company_evaluations(id):
     company = User.query.filter_by(id=id).first()
     evaluations = Evaluation.query.filter_by(company_id=company.id)
@@ -729,7 +725,7 @@ def company_evaluations(id):
 @login_required
 def upload():
     form = DocumentForm()
-    if current_user.type_user == 1:
+    if current_user.is_user:
         if request.method == 'POST' and 'document' in request.files:
             kind = request.form['kind']
             filename = documents.save(request.files['document'])
@@ -757,3 +753,12 @@ def delete_document(id):
     
     flash('Documento excluído com sucesso!')
     return redirect(url_for('candidate_details', id=current_user.id))
+
+
+@app.route('/admin')
+@login_required
+def admin():
+    if current_user.is_admin:
+        return render_template('admin.html')
+    else:
+        return render_template('erro.html')
