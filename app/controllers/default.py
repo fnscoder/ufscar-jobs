@@ -1,14 +1,16 @@
+import os
 from flask import render_template, flash, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Mail, Message
+from flask_uploads import UploadSet
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_weasyprint import HTML, render_pdf
-from app import app, db, lm, mail, s, bcrypt
+from app import app, db, lm, mail, s, bcrypt, documents
 
 from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, \
     CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm, \
-    InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm, ContactForm, EmailForm, NewPasswordForm, EvaluationForm
-from app.models.tables import User, Info, Course, Work, Company, Job, Evaluation
+    InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm, ContactForm, EmailForm, NewPasswordForm, EvaluationForm, DocumentForm
+from app.models.tables import User, Info, Course, Work, Company, Job, Evaluation, Document
 from app.scraping_infojobs import get_http, get_jobs, get_page_job
 
 
@@ -521,11 +523,12 @@ def candidate_details(id):
     user = User.query.filter_by(id=id).first()
     courses = Course.query.filter_by(user_id=id)
     works = Work.query.filter_by(user_id=id)
-
+    documents = Document.query.filter_by(user_id=id)
     candidate = {
         'user': user,
         'courses': courses,
-        'works': works
+        'works': works,
+        'documents': documents
     }
     return render_template('candidate_details.html', c=candidate)
 
@@ -545,6 +548,7 @@ def search_insite_jobs():
 
 
 @app.route("/search_candidates", methods=["GET", "POST"])
+@login_required
 def search_candidates():
     '''
     Busca candidatos conforme o email informado, acessível apenas para usuários
@@ -637,17 +641,20 @@ Métodos que geram os relatórios em pdf para facilitar a impressão
 
 
 @app.route("/all_jobs_pdf", methods=["GET", "POST"])
+@login_required
 def all_jobs_pdf():
     j = Job.query.all()
     return render_template('all_jobs_pdf.html', all_jobs=j)
 
 
 @app.route('/jobs.pdf')
+@login_required
 def jobs_pdf():
     return render_pdf(url_for('all_jobs_pdf'))
 
 
 @app.route("/list_candidates_pdf", methods=["GET", "POST"])
+@login_required
 def list_candidates_pdf():
     '''
     Exibe os candidatos cadastrados
@@ -657,11 +664,13 @@ def list_candidates_pdf():
 
 
 @app.route('/candidates.pdf')
+@login_required
 def candidates_pdf():
     return render_pdf(url_for('list_candidates_pdf'))
 
 
 @app.route("/evaluate", methods=["GET", "POST"])
+@login_required
 def evaluate():
     companies = User.query.filter_by(type_user=2).all()
     if request.method == "POST":
@@ -672,6 +681,7 @@ def evaluate():
 
 
 @app.route("/evaluate_company/<id>", methods=["GET", "POST"])
+@login_required
 def evaluate_company(id):
     form = EvaluationForm()
     if request.method == "POST" and form.validate_on_submit():
@@ -684,6 +694,7 @@ def evaluate_company(id):
 
 
 @app.route("/evaluations", methods=["GET", "POST"])
+@login_required
 def evaluations():
     companies = User.query.filter_by(type_user=2).all()
     if request.method == "POST":
@@ -694,6 +705,7 @@ def evaluations():
 
 
 @app.route("/company_evaluations/<id>", methods=["GET", "POST"])
+@login_required
 def company_evaluations(id):
     company = User.query.filter_by(id=id).first()
     evaluations = Evaluation.query.filter_by(company_id=company.id)
@@ -711,3 +723,37 @@ def company_evaluations(id):
     score[3] /= total
     
     return render_template('company_evaluations.html', evaluation=score, company=company.name, total=total)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    form = DocumentForm()
+    if current_user.type_user == 1:
+        if request.method == 'POST' and 'document' in request.files:
+            kind = request.form['kind']
+            filename = documents.save(request.files['document'])
+            filepath = url_for('static', filename='files/documents/{}'.format(filename))
+            document = Document(kind, filename, filepath, current_user.id)
+            db.session.add(document)
+            db.session.commit()
+            flash('Documento enviado com sucesso!')
+            return redirect(url_for('candidate_details', id=current_user.id))
+        return render_template('upload.html', form=form)
+    else:
+        return render_template('erro.html')
+
+
+@app.route('/delete_document/<int:id>')
+@login_required
+def delete_document(id):
+    document = Document.query.filter_by(id=id).first()
+    db.session.delete(document)
+    db.session.commit()
+
+    diretorio = os.getcwd()
+    diretorio = "{}/app/static/files/documents/{}".format(diretorio, document.name)
+    os.remove(diretorio)
+    
+    flash('Documento excluído com sucesso!')
+    return redirect(url_for('candidate_details', id=current_user.id))

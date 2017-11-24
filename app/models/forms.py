@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired
 from wtforms import StringField, PasswordField, BooleanField, SelectField, validators, TextAreaField
 from wtforms.validators import DataRequired
 
@@ -226,3 +227,8 @@ class EvaluationForm(FlaskForm):
         message="Valorização profissional")])
     innovation = SelectField("Inovação", choices = [('1', '1'),('2', '2'),('3', '3'),('4', '4'),('5', '5')], validators=[DataRequired(
         message="Inovação")])
+
+
+class DocumentForm(FlaskForm):
+    kind = StringField("kind", validators=[DataRequired(message="Informe o tipo do documento.")])
+    document = FileField("document", validators=[FileRequired(message="Adicione o documento.")])

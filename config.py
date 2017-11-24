@@ -16,3 +16,5 @@ MAIL_PASSWORD='Eadsead123'
 MAIL_PORT=465
 MAIL_USE_SSL=True
 MAIL_USE_TLS=False
+
+UPLOADED_DOCUMENTS_DEST = 'app/static/files/documents'

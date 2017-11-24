@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-4 col-md-offset-4">
+
+    <h3>Upload de Documentos</h3>
+    <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}" id="formulario">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            <label>Tipo de documento</label>
+            {{ form.kind(class="form-control", id="kind") }}
+            {% if form.errors.kind %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.kind %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>Documento</label>
+            {{ form.document(class="form-control", id="my_document") }}
+            {% if form.errors.document %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    {% for e in form.errors.document %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        <input id="btn" class="btn btn-primary" type="button" onclick="return validaForm()" name="go" value="Gravar">
+    </form>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        function validaForm() {
+            var kind_document = document.getElementById("kind").value;
+            var my_document = document.getElementById("my_document").value;
+            if(kind_document == '' || my_document == '') {
+                alert("Informe todos os campos!");
+            }
+            else {
+                document.getElementById("formulario").submit();
+            }   
+        }
+    </script>
+{% endblock %}

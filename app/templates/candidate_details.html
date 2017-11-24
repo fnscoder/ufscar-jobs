@@ -56,4 +56,30 @@
             {% endfor %}
         </tbody>    
     </table>
+
+    <h3>Documentos anexos:</h3>
+    <table class="table table-striped mb-4">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Tipo</th>
+                <th>Nome</th>
+                <th>Link</th>
+                {% if current_user == c['user'] %}
+                    <th>Excluir</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for document in c['documents'] %}
+                <tr>
+                    <td>{{ document.kind }}</td>
+                    <td>{{ document.name }}</td>
+                    <td><a href="{{ document.path }}">Visualizar</a></td>
+                    {% if current_user == c['user'] %}
+                        <td><a href="{{ url_for('delete_document', id=document.id) }}">Excluir</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

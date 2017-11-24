@@ -7,10 +7,15 @@ from flask_login import LoginManager
 from flask_mail import Mail, Message
 from flask_bcrypt import Bcrypt
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from flask_uploads import UploadSet, configure_uploads, ALL
 
 
 app = Flask(__name__)
 app.config.from_object('config')
+
+documents = UploadSet('documents', ALL)
+
+configure_uploads(app, documents)
 
 bcrypt = Bcrypt(app)
 mail = Mail(app)

@@ -212,3 +212,24 @@ class Evaluation(db.Model):
         
     def __repr__(self):
         return "<Evaluation %r>" % self.company_id
+
+
+class Document(db.Model):
+    __tablename__ = "documents"
+
+    id = db.Column(db.Integer, primary_key=True)
+    kind = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    path = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    user = db.relationship('User', foreign_keys=user_id)
+
+    def __init__(self, kind, name, path, user_id):
+        self.kind = kind
+        self.name = name
+        self.path = path
+        self.user_id = user_id
+
+    def __repr__(self):
+        return "<Resume %r>" % self.name
