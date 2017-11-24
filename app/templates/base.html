@@ -48,9 +48,9 @@
                     <li><a href="/jobs/{{ current_user.username }}">Vagas Cadastradas</a></li>
                     <li><a href="/list_candidates">Ver Candidatos</a></li>
                   {% elif current_user.is_admin %}
-                    <li><a href="">Candidatos</a></li>
-                    <li><a href="">Empresas</a></li>
-                    <li><a href="">Estatísticas</a></li>
+                    <li><a href="{{ url_for('admin_candidates') }}">Candidatos</a></li>
+                    <li><a href="{{ url_for('admin_companies') }}">Empresas</a></li>
+                    <li><a href="{{ url_for('admin_statistics') }}">Estatísticas</a></li>
                   {% endif %}
                     <li><a href="/evaluate">Avalie empresas</a></li>
                 </ul>

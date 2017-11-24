@@ -762,3 +762,33 @@ def admin():
         return render_template('admin.html')
     else:
         return render_template('erro.html')
+
+
+@app.route('/admin/candidates')
+@login_required
+def admin_candidates():
+    if current_user.is_admin:
+        flash('Veja os candidatos!')
+        return render_template('admin.html')
+    else:
+        return render_template('erro.html')
+
+
+@app.route('/admin/companies')
+@login_required
+def admin_companies():
+    if current_user.is_admin:
+        flash('veja as empresas!')
+        return render_template('admin.html')
+    else:
+        return render_template('erro.html')
+
+
+@app.route('/admin/statistics')
+@login_required
+def admin_statistics():
+    if current_user.is_admin:
+        flash('veja as estatísticas!')
+        return render_template('admin.html')
+    else:
+        return render_template('erro.html')
