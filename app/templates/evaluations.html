@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-8 col-md-offset-2">
+    <h2>Selecione uma empresa para visualizar as avaliações</h2>
+    <form action="" method="POST">
+        {{ csrf_token }}
+        <select name='company'>
+        {% for company in companies %}
+            <option value="{{ company.id }}">{{ company.name }}</option>
+        {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">Visualizar</button>
+    </form>
+</div>
+{% endblock %}

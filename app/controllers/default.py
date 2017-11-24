@@ -7,8 +7,8 @@ from app import app, db, lm, mail, s, bcrypt
 
 from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, \
     CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm, \
-    InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm, ContactForm, EmailForm, NewPasswordForm
-from app.models.tables import User, Info, Course, Work, Company, Job
+    InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm, ContactForm, EmailForm, NewPasswordForm, EvaluationForm
+from app.models.tables import User, Info, Course, Work, Company, Job, Evaluation
 from app.scraping_infojobs import get_http, get_jobs, get_page_job
 
 
@@ -659,3 +659,55 @@ def list_candidates_pdf():
 @app.route('/candidates.pdf')
 def candidates_pdf():
     return render_pdf(url_for('list_candidates_pdf'))
+
+
+@app.route("/evaluate", methods=["GET", "POST"])
+def evaluate():
+    companies = User.query.filter_by(type_user=2).all()
+    if request.method == "POST":
+        company_id = request.form['company']
+        
+        return redirect(url_for('evaluate_company', id=company_id))
+    return render_template('evaluate.html', companies=companies)
+
+
+@app.route("/evaluate_company/<id>", methods=["GET", "POST"])
+def evaluate_company(id):
+    form = EvaluationForm()
+    if request.method == "POST" and form.validate_on_submit():
+        evaluation = Evaluation(form.enviroment.data, form.salary.data, form.recognition.data, form.innovation.data, id)
+        db.session.add(evaluation)
+        db.session.commit()
+        flash('Avaliação realizada com sucesso!')
+        return redirect(url_for('company_evaluations', id=id))
+    return render_template('evaluate_company.html', form=form)
+
+
+@app.route("/evaluations", methods=["GET", "POST"])
+def evaluations():
+    companies = User.query.filter_by(type_user=2).all()
+    if request.method == "POST":
+        company_id = request.form['company']
+        
+        return redirect(url_for('company_evaluations', id=company_id))
+    return render_template('evaluations.html', companies=companies)
+
+
+@app.route("/company_evaluations/<id>", methods=["GET", "POST"])
+def company_evaluations(id):
+    company = User.query.filter_by(id=id).first()
+    evaluations = Evaluation.query.filter_by(company_id=company.id)
+    score = [0,0,0,0]
+    for evaluation in evaluations:
+        score[0] += evaluation.enviroment
+        score[1] += evaluation.salary
+        score[2] += evaluation.recognition
+        score[3] += evaluation.innovation
+
+    total = evaluations.count()
+    score[0] /= total
+    score[1] /= total
+    score[2] /= total
+    score[3] /= total
+    
+    return render_template('company_evaluations.html', evaluation=score, company=company.name, total=total)

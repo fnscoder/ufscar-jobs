@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-4 col-md-offset-4">
+    <h2>Avaliações da empresa {{ company }}</h2>
+    
+    <p>Ambiente: {{ evaluation[0] }}</p>
+    <p>Remuneração: {{ evaluation[1] }}</p>
+    <p>Valorização Profissional: {{ evaluation[2] }}</p>
+    <p>Inovação: {{ evaluation[3] }}</p>
+    <p>Total de avaliações: {{ total }}</p>
+</div>
+ {% endblock %}

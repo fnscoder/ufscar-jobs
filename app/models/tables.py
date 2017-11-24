@@ -200,8 +200,8 @@ class Evaluation(db.Model):
     recognition = db.Column(db.Integer)
     innovation = db.Column(db.Integer)
     
-    company_id = db.Column(db.Integer, db.ForeignKey('companies.id'))
-    company = db.relationship('Company', foreign_keys=company_id)
+    company_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    company = db.relationship('User', foreign_keys=company_id)
 
     def __init__(self, enviroment, salary, recognition, innovation, company_id):
         self.enviroment = enviroment

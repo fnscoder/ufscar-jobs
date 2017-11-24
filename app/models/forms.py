@@ -215,3 +215,14 @@ class NewPasswordForm(FlaskForm):
         "confirm", message="As senhas devem ser iguais")])
     confirm = PasswordField("confirm", validators=[DataRequired(
         message="Informe a senha novamente.")])
+
+
+class EvaluationForm(FlaskForm):
+    enviroment = SelectField("Ambiente de trabalho", choices = [('1', '1'),('2', '2'),('3', '3'),('4', '4'),('5', '5')], validators=[DataRequired(
+        message="Ambiente de trabalho")])
+    salary = SelectField("Salário", choices = [('1', '1'),('2', '2'),('3', '3'),('4', '4'),('5', '5')], validators=[DataRequired(
+        message="Salário")])
+    recognition = SelectField("Valorização profissional", choices = [('1', '1'),('2', '2'),('3', '3'),('4', '4'),('5', '5')], validators=[DataRequired(
+        message="Valorização profissional")])
+    innovation = SelectField("Inovação", choices = [('1', '1'),('2', '2'),('3', '3'),('4', '4'),('5', '5')], validators=[DataRequired(
+        message="Inovação")])
