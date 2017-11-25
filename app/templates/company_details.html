@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+
+cnpj, phone, street, number, city, state, cep,
+
+
+
+{% block content %}
+
+    <h3>Company: {{ c['user'].name }}</h3>
+    <h3>E-mail: {{ c['user'].email }}</h3>
+    
+    <br>
+    <h3>Informações cadastrais:</h3>
+    <table class="table table-striped mb-4">
+        
+        <thead class="thead-inverse">
+        <tr>
+            <th>CNPJ</th>
+            <th>Telefone</th>
+            <th>Endereço</th>
+            <th>Editar</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% if c['info'] %}
+                    <td>{{ c['info'].cnpj }}</td>
+                    <td>{{ c['info'].phone }}</td>
+                    <td>Rua {{ c['info'].street }}, {{ c['info'].number }}<br>{{ c['info'].city }}, {{ c['info'].state }} - {{ c['info'].cep }}</td>
+                    <td><a href="{{ url_for('edit_company_info', id=c['user'].id) }}">Editar</a></td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h4>Área restrita</h4>
+<h3>Candidatos</h3>
+
+<table class="table table-striped mb-4">
+        
+        <thead class="thead-inverse">
+            <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Detalhes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in candidates %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.email }}</td>
+                    <td><a href="{{ url_for('candidate_details', id=c.id) }}">Detalhes</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

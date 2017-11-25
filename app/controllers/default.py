@@ -333,9 +333,9 @@ def delete_work(id):
         return render_template('erro.html')
 
 
-@app.route("/company_info/<username>", methods=["GET", "POST"])
+@app.route("/company_info/<int:id>", methods=["GET", "POST"])
 @login_required
-def company_info(username):
+def company_info(id):
     '''
     Verifica se o perfil é de empresa ou candidato, se for empresa
     Carrega o formulário de informações da empresa
@@ -343,9 +343,9 @@ def company_info(username):
     senão tiver carrega o formulário e redireciona para a url de adicionar
     informações. Se já tiver informações salvas exibe as informações
     '''
-    if current_user.is_company:
+    if current_user.is_company or current_user.is_admin:
         form = InfoCompanyForm()
-        c = Company.query.filter_by(user_id=current_user.id).first()
+        c = Company.query.filter_by(user_id=id).first()
         if c:
             return render_template('company_info.html', c=c)
         else:
@@ -358,22 +358,22 @@ def company_info(username):
                 db.session.commit()
                 flash('Informações inseridas com sucesso!')
                 return redirect(url_for(
-                    'company_info', username=current_user.username))
+                    'company_info', id=id))
         return render_template('add_company_info.html', form=form)
     else:
         return render_template('erro.html')
 
 
-@app.route("/edit_company_info/<username>", methods=["GET", "POST"])
+@app.route("/edit_company_info/<int:id>", methods=["GET", "POST"])
 @login_required
-def edit_company_info(username):
+def edit_company_info(id):
     '''
     Carrega o formulário com as informações da empresa para permitir a edição
     das informações
     '''
-    if current_user.is_company:
+    if current_user.is_company or current_user.is_admin:
         form = EditInfoCompanyForm()
-        c = Company.query.filter_by(user_id=current_user.id).first()
+        c = Company.query.filter_by(user_id=id).first()
         if request.method == "POST":
 
             c.cnpj = request.form.get("cnpj")
@@ -387,7 +387,7 @@ def edit_company_info(username):
             db.session.commit()
             flash('Informações atualizadas com sucesso!')
             return redirect(url_for(
-                'company_info', username=current_user.username))
+                'company_info', id=id))
         return render_template('edit_company_info.html', form=c)
     else:
         return render_template('erro.html')
@@ -768,8 +768,8 @@ def admin():
 @login_required
 def admin_candidates():
     if current_user.is_admin:
-        flash('Veja os candidatos!')
-        return render_template('admin.html')
+        candidates = User.query.filter_by(type_user=1)
+        return render_template('admin_candidates.html', candidates=candidates)
     else:
         return render_template('erro.html')
 
@@ -778,8 +778,8 @@ def admin_candidates():
 @login_required
 def admin_companies():
     if current_user.is_admin:
-        flash('veja as empresas!')
-        return render_template('admin.html')
+        companies = User.query.filter_by(type_user=2)
+        return render_template('admin_companies.html', companies=companies)
     else:
         return render_template('erro.html')
 
@@ -792,3 +792,20 @@ def admin_statistics():
         return render_template('admin.html')
     else:
         return render_template('erro.html')
+
+
+@app.route("/company/details/<int:id>", methods=["GET", "POST"])
+def company_details(id):
+    '''
+    Exibe os detalhes de um candidato
+    Exibe apenas para perfis de empresas
+    '''
+    user = User.query.filter_by(id=id).first()
+    info = Company.query.filter_by(user_id=id).first()
+    jobs = Job.query.filter_by(user_id=id)
+    company = {
+        'user': user,
+        'info': info,
+        'jobs': jobs
+    }
+    return render_template('company_details.html', c=company)
