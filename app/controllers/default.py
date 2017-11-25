@@ -526,7 +526,7 @@ def candidate_details(id):
     Exibe os detalhes de um candidato
     Exibe apenas para perfis de empresas
     '''
-    if current_user.id == id or current_user.is_admin:
+    if current_user.id == id or current_user.is_admin or current_user.is_company:
         user = User.query.filter_by(id=id).first()
         courses = Course.query.filter_by(user_id=id)
         works = Work.query.filter_by(user_id=id)
