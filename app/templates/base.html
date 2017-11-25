@@ -37,7 +37,7 @@
                 <ul class="dropdown-menu">
                   <li><a href="/profile/{{ current_user.username }}">Perfil</a></li>
                   {% if current_user.is_user %}
-                    <li><a href="/info/{{ current_user.username }}">Dados Pessoais</a></li>
+                    <li><a href="/info/{{ current_user.id }}">Dados Pessoais</a></li>
                     <li><a href="/courses/{{ current_user.username }}">Cursos</a></li>
                     <li><a href="/works/{{ current_user.username }}">Experiência Profissional</a></li>
                     <li><a href="/candidate_details/{{ current_user.id }}">CV Completo</a></li>

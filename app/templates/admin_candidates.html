@@ -11,7 +11,8 @@
             <tr>
                 <th>Nome</th>
                 <th>E-mail</th>
-                <th>Detalhes</th>
+                <th>Dados pessoais</th>
+                <th>Currículo completo</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +20,8 @@
                 <tr>
                     <td>{{ c.name }}</td>
                     <td>{{ c.email }}</td>
-                    <td><a href="{{ url_for('candidate_details', id=c.id) }}">Detalhes</a></td>
+                    <td><a href="{{ url_for('edit_info', id=c.id) }}">Editar</a></td>
+                    <td><a href="{{ url_for('candidate_details', id=c.id) }}">Visualizar</a></td>
                 </tr>
             {% endfor %}
         </tbody>

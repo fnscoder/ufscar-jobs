@@ -24,7 +24,7 @@
         <td>{{ c.course_load }}</td>
         <td>{{ c.conclusion }}</td>
         <td>{{ c.observation }}</td>
-        <td><a href="{{ url_for('edit_course', username=current_user.username) }}"><span class="glyphicon glyphicon-edit"></span></a></td>
+        <td><a href="{{ url_for('edit_course', id=c.id) }}"><span class="glyphicon glyphicon-edit"></span></a></td>
         <td><a href="{{ url_for('delete_course', id=c.id) }}"><span class="glyphicon glyphicon-trash"></span></a></td>
     </tr>
     {% endfor %}

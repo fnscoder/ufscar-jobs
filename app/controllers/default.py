@@ -120,18 +120,18 @@ def edit_profile(username):
     return render_template('edit_profile.html', form=form)
 
 
-@app.route("/info/<username>", methods=["GET", "POST"])
+@app.route("/info/<int:id>", methods=["GET", "POST"])
 @login_required
-def info(username):
+def info(id):
     '''
     Carrega o formulário de informações do usuários (dados pessoais)
     Verifica se já existem informações gravadas para o usuário logado,
     senão tiver carrega o formulário e redireciona para a url de adicionar
     informações. Se já tiver informações salvas exibe as informações
     '''
-    if current_user.is_user:
+    if (current_user.is_user and current_user.id == id) or current_user.is_admin:
         form = InfoForm()
-        i = Info.query.filter_by(user_id=current_user.id).first()
+        i = Info.query.filter_by(user_id=id).first()
         if i:
             return render_template('info.html', i=i)
         else:
@@ -145,22 +145,22 @@ def info(username):
                 db.session.commit()
                 flash('Informações inseridas com sucesso!')
                 return redirect(url_for(
-                    'info', username=current_user.username))
+                    'info', id=id))
         return render_template('add_info.html', form=form)
     else:
         return render_template('erro.html')
 
 
-@app.route("/edit_info/<username>", methods=["GET", "POST"])
+@app.route("/edit_info/<int:id>", methods=["GET", "POST"])
 @login_required
-def edit_info(username):
+def edit_info(id):
     '''
     Carrega o formulário com as informações do usuário para permitir a edição
     das informações
     '''
-    if current_user.is_user:
+    if (current_user.is_user and current_user.id == id) or current_user.is_admin:
         form = EditInfoForm()
-        i = Info.query.filter_by(user_id=current_user.id).first()
+        i = Info.query.filter_by(user_id=id).first()
         if request.method == "POST":
             i.birth_date = request.form.get("birth_date")
             i.alternative_email = request.form.get("alternative_email")
@@ -175,7 +175,7 @@ def edit_info(username):
 
             db.session.commit()
             flash('Informações atualizadas com sucesso!')
-            return redirect(url_for('info', username=current_user.username))
+            return redirect(url_for('info', id=id))
         return render_template('edit_info.html', form=i)
     else:
         return render_template('erro.html')
@@ -225,15 +225,15 @@ def add_work(username):
         return render_template('erro.html')
 
 
-@app.route("/edit_course/<username>", methods=["GET", "POST"])
+@app.route("/edit_course/<int:id>", methods=["GET", "POST"])
 @login_required
-def edit_course(username):
+def edit_course(id):
     '''
     Rota para edição das informações de um curso específico do usuário
     '''
-    if current_user.is_user:
+    c = Course.query.filter_by(id=id).first()
+    if (current_user.id == c.user_id) or current_user.is_admin:
         form = EditCourseForm()
-        c = Course.query.filter_by(user_id=current_user.id).first()
         if request.method == "POST":
             c.course_name = request.form.get("course_name")
             c.school_name = request.form.get("school_name")
@@ -244,21 +244,24 @@ def edit_course(username):
 
             db.session.commit()
             flash('Atualizado!')
-            return redirect(url_for('courses', username=current_user.username))
+            if current_user.is_user:
+                return redirect(url_for('courses', username=current_user.username))
+            else:
+                return redirect(url_for('candidate_details', id=c.user_id))
         return render_template('edit_course.html', form=c)
     else:
         return render_template('erro.html')
 
 
-@app.route("/edit_work/<username>", methods=["GET", "POST"])
+@app.route("/edit_work/<int:id>", methods=["GET", "POST"])
 @login_required
-def edit_work(username):
+def edit_work(id):
     '''
     Edita informações de uma exp profissional do usuário
     '''
-    if current_user.is_user:
+    w = Work.query.filter_by(id=id).first()
+    if (current_user.id == w.user_id) or current_user.is_admin:
         form = EditWorkForm()
-        w = Work.query.filter_by(user_id=current_user.id).first()
         if request.method == "POST":
             w.post = request.form.get('post')
             w.company = request.form.get('company')
@@ -269,7 +272,10 @@ def edit_work(username):
 
             db.session.commit()
             flash('Atualizado!')
-            return redirect(url_for('works', username=current_user.username))
+            if current_user.is_user:
+                return redirect(url_for('works', username=current_user.username))
+            else:
+                return redirect(url_for('candidate_details', id=w.user_id))
         return render_template('edit_work.html', form=w)
     else:
         return render_template('erro.html')
@@ -371,7 +377,7 @@ def edit_company_info(id):
     Carrega o formulário com as informações da empresa para permitir a edição
     das informações
     '''
-    if current_user.is_company or current_user.is_admin:
+    if (current_user.is_company and current_user.id == id) or current_user.is_admin:
         form = EditInfoCompanyForm()
         c = Company.query.filter_by(user_id=id).first()
         if request.method == "POST":
@@ -520,17 +526,20 @@ def candidate_details(id):
     Exibe os detalhes de um candidato
     Exibe apenas para perfis de empresas
     '''
-    user = User.query.filter_by(id=id).first()
-    courses = Course.query.filter_by(user_id=id)
-    works = Work.query.filter_by(user_id=id)
-    documents = Document.query.filter_by(user_id=id)
-    candidate = {
-        'user': user,
-        'courses': courses,
-        'works': works,
-        'documents': documents
-    }
-    return render_template('candidate_details.html', c=candidate)
+    if current_user.id == id or current_user.is_admin:
+        user = User.query.filter_by(id=id).first()
+        courses = Course.query.filter_by(user_id=id)
+        works = Work.query.filter_by(user_id=id)
+        documents = Document.query.filter_by(user_id=id)
+        candidate = {
+            'user': user,
+            'courses': courses,
+            'works': works,
+            'documents': documents
+        }
+        return render_template('candidate_details.html', c=candidate)
+    else:
+        return render_template('erro.html')
 
 
 @app.route("/search_insite_jobs", methods=["GET", "POST"])
@@ -788,8 +797,26 @@ def admin_companies():
 @login_required
 def admin_statistics():
     if current_user.is_admin:
-        flash('veja as estatísticas!')
-        return render_template('admin.html')
+        companies = User.query.filter_by(type_user=2)
+        company_jobs = {}
+        total_jobs = 0
+        for company in companies:
+            jobs = Job.query.filter_by(user_id=company.id).count()
+            company_jobs[company.name] = jobs
+            total_jobs += jobs
+            print(company)
+            print(company_jobs)
+        companies = companies.count()
+        candidates = User.query.filter_by(type_user=1).count()
+        total = {
+            'total_jobs': total_jobs,
+            'companies': companies,
+            'jobs_by_companies': total_jobs/companies,
+            'candidates': candidates,
+            'jobs_by_candidates': total_jobs/candidates,
+            'candidates_by_company': candidates/companies
+        }
+        return render_template('admin_statistics.html', company_jobs=company_jobs, total=total)
     else:
         return render_template('erro.html')
 

@@ -2,6 +2,58 @@
 
 {% block content %}
 
-<h3>Bem vindo a área restrita do sistema!</h3>
+<h4>Área restrita</h4>
 
+<h3>Dados e estatísticas</h3>
+
+    <table class="table table-striped mb-4">    
+        <thead class="thead-inverse">
+            <tr>
+                <th>Empresa</th>
+                <th>Quantidade de vagas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for company in company_jobs %}
+                <tr>
+                    <td>{{ company }}</td>
+                    <td>{{ company_jobs[company] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-striped mb-4">    
+        <thead class="thead-inverse">
+            <tr>
+                <th>Total empresas</th>
+                <th>Total de vagas</th>
+                <th>Vagas por empresas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ total['companies'] }}</td>
+                <td>{{ total['total_jobs'] }}</td>
+                <td>{{ total['jobs_by_companies'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-striped mb-4">    
+        <thead class="thead-inverse">
+            <tr>
+                <th>Candidatos</th>
+                <th>Vagas por candidatos</th>
+                <th>Candidatos por empresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ total['candidates'] }}</td>
+                <td>{{ total['jobs_by_candidates'] }}</td>
+                <td>{{ total['candidates_by_company'] }}</td>
+            </tr>
+        </tbody>
+    </table>
 {% endblock %}

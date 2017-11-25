@@ -15,7 +15,8 @@
             <th>Escola</th>
             <th>Tipo</th>
             <th>Carga horária</th>
-            <th>Conslusão</th>
+            <th>Conclusão</th>
+            <th>Editar</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@
                     <td>{{ course.grade }}</td>
                     <td>{{ course.course_load }}</td>
                     <td>{{ course.conclusion }}</td>
+                    <td><a href="{{ url_for('edit_course', id=course.id) }}">Editar</a></td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -42,6 +44,7 @@
                 <th>Data de entrada</th>
                 <th>Data de saida</th>
                 <th>Tarefas</th>
+                <th>Editar</th>
             </tr>
         </thead>
         <tbody>
@@ -52,6 +55,7 @@
                     <td>{{ work.entry_date }}</td>
                     <td>{{ work.departure_date }}</td>
                     <td>{{ work.tasks }}</td>
+                    <td><a href="{{ url_for('edit_work', id=work.id) }}">Editar</a></td>
                 </tr>
             {% endfor %}
         </tbody>    
