@@ -29,13 +29,12 @@ def pti_get_jobs(content):
     d = []
 
     for job in jobs:
-        data = soup.find('div', {'class': 'job-icons'})
         j = {
             'url': job.a.get('href'),
             'title': job.h4.string,
-            'company': data.a.text,
+            'company': job.div.a.text,
             'salary': 'Não divulgado',
-            'local': data.a.next_sibling.text
+            'local': job.div.a.next_sibling.text
         }
 
         d.append(j)

@@ -13,6 +13,7 @@ from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, \
 from app.models.tables import User, Info, Course, Work, Company, Job, Evaluation, Document
 from app.scraping_infojobs import if_get_http, if_get_jobs, if_get_page_job
 from app.scraping_pti import pti_get_http, pti_get_jobs
+from app.scraping_vagas import vg_get_http, vg_get_jobs
 
 
 @lm.user_loader
@@ -514,7 +515,12 @@ def search_outjobs(search):
     if r:
         ptijobs = pti_get_jobs(r.text)
 
-    return render_template('search_outjobs.html', infojobs=infojobs, ptijobs=ptijobs)
+    r = vg_get_http(search)
+
+    if r:
+        vg_jobs = vg_get_jobs(r.text)
+
+    return render_template('search_outjobs.html', infojobs=infojobs, ptijobs=ptijobs, vg_jobs=vg_jobs)
 
 
 @app.route("/list_candidates", methods=["GET", "POST"])
