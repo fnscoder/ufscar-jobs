@@ -11,7 +11,8 @@ from app.models.forms import LoginForm, RegistrationForm, EditForm, InfoForm, \
     CourseForm, WorkForm, EditInfoForm, EditCourseForm, EditWorkForm, \
     InfoCompanyForm, EditInfoCompanyForm, JobForm, EditJobForm, SearchForm, ContactForm, EmailForm, NewPasswordForm, EvaluationForm, DocumentForm
 from app.models.tables import User, Info, Course, Work, Company, Job, Evaluation, Document
-from app.scraping_infojobs import get_http, get_jobs, get_page_job
+from app.scraping_infojobs import if_get_http, if_get_jobs, if_get_page_job
+from app.scraping_pti import pti_get_http, pti_get_jobs
 
 
 @lm.user_loader
@@ -502,12 +503,18 @@ def search_jobs(search=None):
 
 @app.route("/search_outjobs/<search>", methods=["GET", "POST"])
 def search_outjobs(search):
-    r = get_http(search)
+    r = if_get_http(search)
 
     if r:
-        jobs_list = get_jobs(r.text)
-        jobs = get_page_job(jobs_list)
-    return render_template('search_outjobs.html', jobs=jobs)
+        jobs_list = if_get_jobs(r.text)
+        infojobs = if_get_page_job(jobs_list)
+
+    r = pti_get_http(search)
+
+    if r:
+        ptijobs = pti_get_jobs(r.text)
+
+    return render_template('search_outjobs.html', infojobs=infojobs, ptijobs=ptijobs)
 
 
 @app.route("/list_candidates", methods=["GET", "POST"])

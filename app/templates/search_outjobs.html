@@ -13,10 +13,31 @@
         </tr>
     </thead>
     <tbody>
-        {% for job in jobs %}
+        {% for job in infojobs %}
             <tr>
                 <td>{{ job.title }}</td>
-                <td>Salário: {{ job.salary }} <br>Local: {{ job.local }}</td>
+                <td>Salário: {{ job.salary }} <br>Local: {{ job.local }} <br>Empresa: {{ job.company }}</td>
+                <td><a href="{{ job.url }}" target="_blank">Saiba mais</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Vagas disponíveis no site ProfissionaisTI</h3>
+
+<table class="table table-striped mb-4">
+    <thead class="thead-inverse">    
+        <tr>
+            <th>Título da vaga</th>
+            <th>Descrição</th>
+            <th>Candidate-se</th> 
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in ptijobs %}
+            <tr>
+                <td>{{ job.title }}</td>
+                <td>Salário: {{ job.salary }} <br>Local: {{ job.local }} <br>Empresa: {{ job.company }}</td>
                 <td><a href="{{ job.url }}" target="_blank">Saiba mais</a></td>
             </tr>
         {% endfor %}

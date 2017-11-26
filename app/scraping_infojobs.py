@@ -6,7 +6,7 @@ Implementada busca no site infojobs.com.br
 '''
 
 
-def get_http(search):
+def if_get_http(search):
     '''
     Recebe um termo para buscar e realiza retorna o html
     '''
@@ -14,7 +14,7 @@ def get_http(search):
     return requests.get(url)
 
 
-def get_jobs(content):
+def if_get_jobs(content):
     '''
     Recebe o html e o parseia utilizando lxml
     Depois percorre o html buscando as informações das vagas (jobs)
@@ -32,7 +32,7 @@ def get_jobs(content):
     return jobs_list
 
 
-def get_page_job(jobs_list):
+def if_get_page_job(jobs_list):
     '''
     Recebe a lista com os links das vagas e acessa link por link,
     Chama a função parse_page_vaga passando como parametros o html da página
@@ -44,13 +44,13 @@ def get_page_job(jobs_list):
     for job in jobs_list:
         r = requests.get(job)
 
-        d = parse_page_vaga(r.text, job)
+        d = if_parse_page_vaga(r.text, job)
         jobs.append(d.copy())
 
     return jobs
 
 
-def parse_page_vaga(content, job_url):
+def if_parse_page_vaga(content, job_url):
     '''
     Recebe o html da página da vaga e sua url e busca as informações desejadas
     como Titulo, Descrição, Empresa, Salário e local de trabalho
