@@ -504,6 +504,11 @@ def search_jobs(search=None):
 
 @app.route("/search_outjobs/<search>", methods=["GET", "POST"])
 def search_outjobs(search):
+    '''
+    Este controller recebe o termo a ser buscado, realiza o get utilizando a função
+    adequada para cada site que está sendo crawleado, busca as informações das vagas 
+    renderiza o template passando as vagas de cada site
+    '''
     r = if_get_http(search)
 
     if r:
@@ -693,6 +698,9 @@ def candidates_pdf():
 
 @app.route("/evaluate", methods=["GET", "POST"])
 def evaluate():
+    '''
+    método que seleciona as empresas cadastradas para permitir a avaliação
+    '''
     companies = User.query.filter_by(type_user=2).all()
     if request.method == "POST":
         company_id = request.form['company']
@@ -703,6 +711,9 @@ def evaluate():
 
 @app.route("/evaluate_company/<id>", methods=["GET", "POST"])
 def evaluate_company(id):
+    '''
+    método que permite avaliar uma empresa selecionada anteriormente
+    '''
     form = EvaluationForm()
     if request.method == "POST" and form.validate_on_submit():
         evaluation = Evaluation(form.enviroment.data, form.salary.data, form.recognition.data, form.innovation.data, id)
@@ -715,6 +726,9 @@ def evaluate_company(id):
 
 @app.route("/evaluations", methods=["GET", "POST"])
 def evaluations():
+    '''
+    método que permite selecionar uma empresa para visualizar suas avaliações
+    '''
     companies = User.query.filter_by(type_user=2).all()
     if request.method == "POST":
         company_id = request.form['company']
@@ -725,6 +739,10 @@ def evaluations():
 
 @app.route("/company_evaluations/<id>", methods=["GET", "POST"])
 def company_evaluations(id):
+    '''
+    método que recupera as avaliações de uma empresa do banco de dados e 
+    calcula a média para cada item, depois exibe ao usuário
+    '''
     company = User.query.filter_by(id=id).first()
     evaluations = Evaluation.query.filter_by(company_id=company.id)
     score = [0,0,0,0]
@@ -746,6 +764,9 @@ def company_evaluations(id):
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload():
+    '''
+    método que permite o upload de documentos utilizando a biblioteca flask-uploads
+    '''
     form = DocumentForm()
     if current_user.is_user:
         if request.method == 'POST' and 'document' in request.files:
@@ -765,6 +786,10 @@ def upload():
 @app.route('/delete_document/<int:id>')
 @login_required
 def delete_document(id):
+    '''
+    método que recebe um id de um documento, localiza no banco de dados, o exclui no db
+    exclui também o arquivo do diretório no servidor
+    '''
     document = Document.query.filter_by(id=id).first()
     db.session.delete(document)
     db.session.commit()
@@ -780,6 +805,9 @@ def delete_document(id):
 @app.route('/admin')
 @login_required
 def admin():
+    '''
+    retorna a página do admin ou erro caso o usuário não seja autorizado
+    '''
     if current_user.is_admin:
         return render_template('admin.html')
     else:
@@ -789,6 +817,9 @@ def admin():
 @app.route('/admin/candidates')
 @login_required
 def admin_candidates():
+    '''
+    exibe as informações dos candidatos ao admin e permite a edição
+    '''
     if current_user.is_admin:
         candidates = User.query.filter_by(type_user=1)
         return render_template('admin_candidates.html', candidates=candidates)
@@ -799,6 +830,9 @@ def admin_candidates():
 @app.route('/admin/companies')
 @login_required
 def admin_companies():
+    '''
+    exibe as informações das empresas ao admin e permite a edição
+    '''
     if current_user.is_admin:
         companies = User.query.filter_by(type_user=2)
         return render_template('admin_companies.html', companies=companies)
@@ -809,6 +843,9 @@ def admin_companies():
 @app.route('/admin/statistics')
 @login_required
 def admin_statistics():
+    '''
+    exibe as estatísticas sobre candidatos, vagas e empresas ao admin
+    '''
     if current_user.is_admin:
         companies = User.query.filter_by(type_user=2)
         company_jobs = {}

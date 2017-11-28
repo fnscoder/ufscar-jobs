@@ -13,11 +13,13 @@ from flask_uploads import UploadSet, configure_uploads, ALL
 app = Flask(__name__)
 app.config.from_object('config')
 
+#utilizado para permitir o upload de documentos
 documents = UploadSet('documents', ALL)
-
 configure_uploads(app, documents)
 
+#utilizado para encriptar o password
 bcrypt = Bcrypt(app)
+#utilizado para envio de emails
 mail = Mail(app)
 s = URLSafeTimedSerializer('total-secret')
 

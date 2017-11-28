@@ -17,4 +17,5 @@ MAIL_PORT=465
 MAIL_USE_SSL=True
 MAIL_USE_TLS=False
 
+#diretorio destino dos documentos após o upload
 UPLOADED_DOCUMENTS_DEST = 'app/static/files/documents'
